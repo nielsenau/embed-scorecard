@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>NH Right-to-Know Transparency Scorecard</title>
+<style>
+  :root {
+    --ink: #1a1f2e;
+    --ink-soft: #4a5161;
+    --paper: #f5f6f7;
+    --rule: #e6e4dc;
+    --accent: #c9b537;
+    --warn-bg: #fdf2d6;
+    --warn-ink: #7a5a00;
+    --bad: #b03a3a;
+    --ok: #2e7d4f;
+    --mid: #b8923a;
+    --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    --font-serif: "Iowan Old Style", "Palatino Linotype", Georgia, serif;
+  }
+
+  * { box-sizing: border-box; }
+
+  html, body {
+    margin: 0;
+    padding: 0;
+    background: transparent;
+    font-family: var(--font-sans);
+    color: var(--ink);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .scorecard {
+    max-width: 720px;
+    margin: 16px auto;
+    padding: 28px 32px 24px;
+    background: var(--paper);
+    border: 1px solid var(--rule);
+    border-radius: 6px;
+  }
+
+  /* Headline */
+  .headline {
+    font-family: var(--font-serif);
+    font-size: 22px;
+    line-height: 1.45;
+    margin: 0 0 22px;
+    color: var(--ink);
+  }
+  .headline .score {
+    font-weight: 700;
+    color: var(--ink);
+  }
+  .headline .tier {
+    display: block;
+    margin-top: 4px;
+    color: var(--ink-soft);
+    font-style: italic;
+    font-size: 19px;
+  }
+  .town-select {
+    font-family: var(--font-serif);
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--ink);
+    background: transparent;
+    border: none;
+    border-bottom: 2px dotted var(--ink);
+    padding: 0 22px 1px 2px;
+    cursor: pointer;
+    appearance: none;
+    -webkit-appearance: none;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'><path d='M0 0l5 6 5-6z' fill='%231a1f2e'/></svg>");
+    background-repeat: no-repeat;
+    background-position: right 4px center;
+  }
+  .town-select:focus { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+  /* Meter */
+  .meter {
+    margin: 0 0 10px;
+  }
+  .response-count {
+    font-size: 12px;
+    color: var(--ink-soft);
+    margin: 0 0 22px;
+    font-style: italic;
+  }
+  .meter-labels {
+    display: flex;
+    justify-content: space-between;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    color: var(--ink-soft);
+    margin-bottom: 8px;
+  }
+  .meter-track {
+    position: relative;
+    height: 14px;
+    border-radius: 7px;
+    background: linear-gradient(
+      90deg,
+      #1a1f2e 0%,
+      #2c2f3d 18%,
+      #595a4e 42%,
+      #8a8246 60%,
+      #b8a838 75%,
+      #d9c33a 87%,
+      #ead43c 100%
+    );
+  }
+  .meter-dot {
+    position: absolute;
+    top: 50%;
+    width: 18px;
+    height: 18px;
+    background: #fff;
+    border: 2px solid #fff;
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    box-shadow:
+      0 0 0 1px rgba(0,0,0,0.15),
+      0 2px 6px rgba(0,0,0,0.18),
+      0 0 14px rgba(234, 212, 60, 0.55);
+    transition: left 320ms cubic-bezier(.4,0,.2,1);
+  }
+
+  /* Quick stats */
+  .quick-stats {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 4px;
+    padding: 18px 0 14px;
+    border-top: 1px solid var(--rule);
+    border-bottom: 1px solid var(--rule);
+    margin-bottom: 18px;
+  }
+  .stat {
+    position: relative;
+    text-align: center;
+    padding: 4px 6px;
+    cursor: help;
+  }
+  .stat-icon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 28px;
+    margin-bottom: 6px;
+    color: var(--ink);
+  }
+  .stat-icon svg {
+    width: 24px;
+    height: 24px;
+    stroke: var(--ink);
+    fill: none;
+    stroke-width: 1.6;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+  .stat-value {
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 1.2;
+    color: var(--ink);
+    margin-bottom: 3px;
+  }
+  .stat-value.ok { color: var(--ok); }
+  .stat-value.mid { color: var(--mid); }
+  .stat-value.bad { color: var(--bad); }
+  .stat-label {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    line-height: 1.25;
+  }
+  .stat .tip {
+    position: absolute;
+    bottom: calc(100% + 8px);
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--ink);
+    color: #fff;
+    font-size: 12px;
+    line-height: 1.4;
+    padding: 8px 10px;
+    border-radius: 4px;
+    width: 200px;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 140ms;
+    z-index: 10;
+    text-align: left;
+    font-weight: 400;
+    letter-spacing: 0;
+    text-transform: none;
+  }
+  .stat .tip::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border: 5px solid transparent;
+    border-top-color: var(--ink);
+  }
+  .stat:hover .tip,
+  .stat:focus-within .tip { opacity: 1; }
+
+  /* Deadline warning */
+  .warning {
+    background: var(--warn-bg);
+    color: var(--warn-ink);
+    border-left: 3px solid var(--accent);
+    padding: 10px 14px;
+    font-size: 13px;
+    line-height: 1.45;
+    margin-bottom: 18px;
+    border-radius: 0 4px 4px 0;
+  }
+  .warning.hidden { display: none; }
+
+  /* Collapsible sections */
+  details {
+    border-top: 1px solid var(--rule);
+    padding: 14px 0 0;
+    margin-top: 4px;
+  }
+  details + details { margin-top: 0; }
+  summary {
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--ink);
+    list-style: none;
+    padding: 4px 0;
+    user-select: none;
+  }
+  summary::-webkit-details-marker { display: none; }
+  summary::before {
+    content: "▸";
+    display: inline-block;
+    margin-right: 8px;
+    color: var(--ink-soft);
+    transition: transform 140ms;
+  }
+  details[open] summary::before { transform: rotate(90deg); }
+  details .body {
+    padding: 8px 0 14px 18px;
+    font-size: 14px;
+    line-height: 1.55;
+    color: var(--ink);
+  }
+  details .body p { margin: 0 0 8px; }
+  details .body .quote {
+    font-style: italic;
+    color: var(--ink-soft);
+    margin: 6px 0;
+  }
+  .rubric {
+    list-style: none;
+    padding: 0;
+    margin: 8px 0 0;
+    font-size: 13px;
+  }
+  .rubric li {
+    display: flex;
+    gap: 10px;
+    padding: 3px 0;
+  }
+  .rubric .pt {
+    font-weight: 700;
+    min-width: 32px;
+    font-variant-numeric: tabular-nums;
+    color: var(--ink);
+  }
+
+  /* Responsive */
+  @media (max-width: 540px) {
+    .scorecard { padding: 22px 18px; margin: 8px; }
+    .headline { font-size: 19px; }
+    .town-select { font-size: 19px; }
+    .quick-stats { grid-template-columns: repeat(5, 1fr); gap: 2px; }
+    .stat { padding: 4px 2px; }
+    .stat-value { font-size: 12px; }
+    .stat-label { font-size: 9px; }
+    .stat .tip { width: 160px; font-size: 11px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="scorecard" id="scorecard">
+  <p class="headline">
+    We scored
+    <select class="town-select" id="townSelect" aria-label="Select a town"></select>
+    a <span class="score" id="score">+0</span> for transparency.
+    <span class="tier" id="tier">—</span>
+  </p>
+
+  <div class="meter" aria-hidden="true">
+    <div class="meter-labels">
+      <span>DARK</span>
+      <span>GLOWING</span>
+    </div>
+    <div class="meter-track">
+      <div class="meter-dot" id="meterDot" style="left: 50%"></div>
+    </div>
+  </div>
+
+  <div class="response-count">
+    Graded based on responses to <span id="responded">—</span> of <span id="totalReq">—</span> requests.
+  </div>
+
+  <div class="quick-stats">
+    <div class="stat" tabindex="0">
+      <div class="stat-icon">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 2"/><path d="M9 3h6"/></svg>
+      </div>
+      <div class="stat-value" id="statReply">—</div>
+      <div class="stat-label">Avg. Reply</div>
+      <div class="tip" id="tipReply">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</div>
+    </div>
+
+    <div class="stat" tabindex="0">
+      <div class="stat-icon">
+        <svg viewBox="0 0 24 24"><path d="M7 3h7l5 5v13H7z"/><path d="M14 3v5h5"/><path d="M10 13h6M10 17h6"/></svg>
+      </div>
+      <div class="stat-value" id="statRecords">—</div>
+      <div class="stat-label">Records</div>
+      <div class="tip" id="tipRecords">Sed do eiusmod tempor incididunt ut labore et dolore.</div>
+    </div>
+
+    <div class="stat" tabindex="0">
+      <div class="stat-icon">
+        <svg viewBox="0 0 24 24"><path d="M6 4h9l4 4v12H6z"/><path d="M15 4v4h4"/><path d="M9 12h7M9 15h7M9 18h4"/></svg>
+      </div>
+      <div class="stat-value" id="statPages">—</div>
+      <div class="stat-label">Pages</div>
+      <div class="tip" id="tipPages">Ut enim ad minim veniam, quis nostrud exercitation ullamco.</div>
+    </div>
+
+    <div class="stat" tabindex="0">
+      <div class="stat-icon">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M8 8l8 8M16 8l-8 8"/></svg>
+      </div>
+      <div class="stat-value" id="statRejected">—</div>
+      <div class="stat-label">Rejected</div>
+      <div class="tip" id="tipRejected">Duis aute irure dolor in reprehenderit in voluptate velit.</div>
+    </div>
+
+    <div class="stat" tabindex="0">
+      <div class="stat-icon">
+        <svg viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="9" rx="1.5"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>
+      </div>
+      <div class="stat-value" id="statExempt">—</div>
+      <div class="stat-label">Exemptions</div>
+      <div class="tip" id="tipExempt">Excepteur sint occaecat cupidatat non proident, sunt in culpa.</div>
+    </div>
+  </div>
+
+  <div class="warning hidden" id="warning"></div>
+
+  <details>
+    <summary>Agency response</summary>
+    <div class="body">
+      <p>We surveyed <span id="agencyTown">this town</span> about Right to Know access and this project and invited them to respond.</p>
+      <p id="agencyResponseLine"></p>
+    </div>
+  </details>
+
+  <details>
+    <summary>How we scored this</summary>
+    <div class="body">
+      <p>Each request was scored from −5 to +5 based on how the agency handled it. The total across all requests produces the transparency score.</p>
+      <ul class="rubric">
+        <li><span class="pt">+5</span><span>Immediate electronic access, little to no redaction</span></li>
+        <li><span class="pt">+4</span><span>Timely access with limited redaction</span></li>
+        <li><span class="pt">+3</span><span>Delayed access after back and forth</span></li>
+        <li><span class="pt">+2</span><span>Access, but required in-person pickup or residency</span></li>
+        <li><span class="pt">+1</span><span>Access with excessive redaction</span></li>
+        <li><span class="pt">0</span><span>No responsive documents exist</span></li>
+        <li><span class="pt">−1</span><span>Process confusion, documents not provided</span></li>
+        <li><span class="pt">−2</span><span>Rejection on records requiring balancing test</span></li>
+        <li><span class="pt">−3</span><span>Acknowledged but never fulfilled</span></li>
+        <li><span class="pt">−4</span><span>Rejected records routinely considered public</span></li>
+        <li><span class="pt">−5</span><span>No response at all</span></li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<script>
+/* ============================================================
+   DATA — placeholders only. 
+   EXAMPLE:
+   "Concord": { score: 14, avgReply: "2 days", pages: 384, ... }
+
+   Fields per town:
+     score          : integer (sum of per-request scores, 0-5 each)
+     requests       : number of requests 
+     avgReply       : string shown in the Avg. Reply column
+     records        : "digital" | "in-person" | "none"
+     pages          : number or string — total pages provided
+     rejected       : number or string
+     exemptions     : number or string
+     missedDeadline : true | false
+     agencyResponse : string (statement) | null (= "declined to comment")
+   ============================================================ */
+const DEFAULTS = {
+  score: 25,           // max 0-5 each 
+  requests: 5,         // total requests filed
+  responded: 5,        // requests the agency actually responded to
+  avgReply: "—",
+  records: "digital",
+  pages: "—",
+  rejected: "—",
+  exemptions: "—",
+  missedDeadline: false,
+  agencyResponse: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+};
+
+const TOWN_OVERRIDES = {
+  "Belmont":      {},
+  "Berlin":       {},
+  "Bow":          {},
+  "Claremont":    {},
+  "Concord":      {},
+  "Derry":        {},
+  "Dover":        {},
+  "Durham":       {},
+  "Franklin":     {},
+  "Gorham":       {},
+  "Hanover":      {},
+  "Hopkinton":    {},
+  "Keene":        {},
+  "Laconia":      {},
+  "Lebanon":      {},
+  "Manchester":   {},
+  "Nashua":       {},
+  "Peterborough": {},
+  "Portsmouth":   {},
+  "Rochester":    {},
+  "Salem":        {},
+  "Somersworth":  {}
+};
+
+const TOWNS = Object.fromEntries(
+  Object.entries(TOWN_OVERRIDES).map(([name, o]) => [name, { ...DEFAULTS, ...o }])
+);
+
+function tierFor(norm) {
+  if (norm >=  0.60) return "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor.";
+  if (norm >=  0.20) return "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi.";
+  if (norm >= -0.20) return "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum.";
+  if (norm >= -0.60) return "Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia.";
+  return "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium.";
+}
+
+const RECORDS_DISPLAY = {
+  "digital":   { text: "Digital",       cls: "ok",  tip: "Lorem ipsum dolor sit amet, consectetur adipiscing elit." },
+  "in-person": { text: "In-person",     cls: "mid", tip: "Sed do eiusmod tempor incididunt ut labore et dolore." },
+  "none":      { text: "Not fulfilled", cls: "bad", tip: "Ut enim ad minim veniam, quis nostrud exercitation." }
+};
+
+const $ = (id) => document.getElementById(id);
+const select = $("townSelect");
+
+// Populate dropdown in given order
+Object.keys(TOWNS).forEach(name => {
+  const opt = document.createElement("option");
+  opt.value = name;
+  opt.textContent = name;
+  select.appendChild(opt);
+});
+
+function fmtScore(n) {
+  if (n > 0) return "+" + n;
+  if (n < 0) return "−" + Math.abs(n);
+  return "0";
+}
+
+function render(name) {
+  const t = TOWNS[name];
+  if (!t) return;
+
+  // Score + tier
+  $("score").textContent = fmtScore(t.score);
+  const maxPossible = t.requests * 5;
+  const norm = Math.max(-1, Math.min(1, t.score / maxPossible));  // -1..+1
+  $("tier").textContent = tierFor(norm);
+
+  // Meter dot position: norm -1..+1  →  0..100%
+  const pct = ((norm + 1) / 2) * 100;
+  $("meterDot").style.left = pct + "%";
+
+  $("responded").textContent = t.responded;
+  $("totalReq").textContent = t.requests;
+
+  // Quick stats
+  $("statReply").textContent = t.avgReply;
+  const rec = RECORDS_DISPLAY[t.records] || RECORDS_DISPLAY["none"];
+  const recEl = $("statRecords");
+  recEl.textContent = rec.text;
+  recEl.className = "stat-value " + rec.cls;
+  $("tipRecords").textContent = rec.tip;
+
+  $("statPages").textContent = t.pages;
+  $("statRejected").textContent = t.rejected;
+  $("statRejected").className = "stat-value " + (
+    typeof t.rejected !== "number" ? "" :
+    t.rejected === 0 ? "ok" :
+    t.rejected >= 2 ? "bad" : "mid"
+  );
+  $("statExempt").textContent = t.exemptions;
+
+  const warn = $("warning");
+  if (t.missedDeadline) {
+    warn.textContent = `${name} — lorem ipsum dolor sit amet, consectetur adipiscing elit.`;
+    warn.classList.remove("hidden");
+  } else {
+    warn.classList.add("hidden");
+  }
+
+  // Agency response
+  $("agencyTown").textContent = name;
+  const line = $("agencyResponseLine");
+  if (t.agencyResponse) {
+    line.innerHTML = `Here is their statement: <span class="quote">"${t.agencyResponse}"</span>`;
+  } else {
+    line.innerHTML = `They declined to comment.`;
+  }
+}
+
+select.addEventListener("change", e => render(e.target.value));
+
+const initial = Object.keys(TOWNS)[0];
+select.value = initial;
+render(initial);
+</script>
+
+</body>
+</html>
