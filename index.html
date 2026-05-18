@@ -212,18 +212,6 @@
   .stat:hover .tip,
   .stat:focus-within .tip { opacity: 1; }
 
-  /* Deadline warning */
-  .warning {
-    background: var(--warn-bg);
-    color: var(--warn-ink);
-    border-left: 3px solid var(--accent);
-    padding: 10px 14px;
-    font-size: 13px;
-    line-height: 1.45;
-    margin-bottom: 18px;
-    border-radius: 0 4px 4px 0;
-  }
-  .warning.hidden { display: none; }
 
   /* Collapsible sections */
   details {
@@ -325,7 +313,7 @@
       </div>
       <div class="stat-value" id="statReply">—</div>
       <div class="stat-label">Avg. Reply</div>
-      <div class="tip" id="tipReply">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</div>
+      <div class="tip" id="tipReply">We calculated this averaged across each graded request.</div>
     </div>
 
     <div class="stat" tabindex="0">
@@ -334,7 +322,7 @@
       </div>
       <div class="stat-value" id="statRecords">—</div>
       <div class="stat-label">Records</div>
-      <div class="tip" id="tipRecords">Sed do eiusmod tempor incididunt ut labore et dolore.</div>
+      <div class="tip" id="tipRecords">Requests that resulted in provided records.</div>
     </div>
 
     <div class="stat" tabindex="0">
@@ -343,7 +331,7 @@
       </div>
       <div class="stat-value" id="statPages">—</div>
       <div class="stat-label">Pages</div>
-      <div class="tip" id="tipPages">Ut enim ad minim veniam, quis nostrud exercitation ullamco.</div>
+      <div class="tip" id="tipPages">Counted from uploaded digital and scanned physical documents.</div>
     </div>
 
     <div class="stat" tabindex="0">
@@ -352,7 +340,7 @@
       </div>
       <div class="stat-value" id="statRejected">—</div>
       <div class="stat-label">Rejected</div>
-      <div class="tip" id="tipRejected">Duis aute irure dolor in reprehenderit in voluptate velit.</div>
+      <div class="tip" id="tipRejected">Total requests that were directly rejected.</div>
     </div>
 
     <div class="stat" tabindex="0">
@@ -361,11 +349,10 @@
       </div>
       <div class="stat-value" id="statExempt">—</div>
       <div class="stat-label">Exemptions</div>
-      <div class="tip" id="tipExempt">Excepteur sint occaecat cupidatat non proident, sunt in culpa.</div>
+      <div class="tip" id="tipExempt">Requests that agencies claimed were exempt from disclosure under state law.</div>
     </div>
   </div>
 
-  <div class="warning hidden" id="warning"></div>
 
   <details>
     <summary>Agency response</summary>
@@ -744,13 +731,6 @@ function render(name) {
   );
   $("statExempt").textContent = t.exemptions;
 
-  const warn = $("warning");
-  if (t.missedDeadline) {
-    warn.textContent = `${name} — lorem ipsum dolor sit amet, consectetur adipiscing elit.`;
-    warn.classList.remove("hidden");
-  } else {
-    warn.classList.add("hidden");
-  }
 
   // Agency response
   $("agencyTown").textContent = name;
@@ -758,7 +738,7 @@ function render(name) {
   if (t.agencyResponse) {
     line.innerHTML = `Here is their statement: <span class="quote">"${t.agencyResponse}"</span>`;
   } else {
-    line.innerHTML = `They declined to comment.`;
+    line.innerHTML = `They haven not yet responded.`;
   }
 }
 
