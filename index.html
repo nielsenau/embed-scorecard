@@ -236,6 +236,144 @@
   .stat:hover .tip,
   .stat:focus-within .tip { opacity: 1; }
 
+  .req-section { margin: 0 0 18px; }
+  .req-section__heading {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--ink);
+    margin: 0 0 10px;
+    letter-spacing: 0.04em;
+  }
+
+  .req-strip {
+    display: flex;
+    gap: 3px;
+    height: 20px;
+    border-radius: 4px;
+    overflow: hidden;
+    margin: 0 0 9px;
+  }
+  .req-strip__seg {
+    flex: 1 1 0;
+    min-width: 0;
+    background: #97a1ad;
+  }
+  .req-legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px 16px;
+    font-size: 13px;
+    color: var(--ink-body);
+    margin: 0 0 14px;
+  }
+  .req-legend > span { white-space: nowrap; }
+  .req-legend .dot {
+    display: inline-block;
+    width: 9px;
+    height: 9px;
+    border-radius: 2px;
+    margin-right: 5px;
+    vertical-align: middle;
+  }
+  .req-legend .zero { color: #97a1ad; }
+
+  .foia__single {
+    width: 100%;
+    overflow: hidden;
+    border: 1px solid #97A1AD;
+    border-radius: 4px;
+    background-color: #fff;
+    text-align: left;
+    margin-bottom: 9.5px;
+  }
+  .foia__single:last-child { margin-bottom: 0; }
+  .foia__single .foia__single__header {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 6px 10px;
+    margin-bottom: 0;
+    padding: 9.5px;
+  }
+  .foia__single .foia__single__header p {
+    flex: 1;
+    margin: 0;
+  }
+  .foia__single .foia__single__header p.score {
+    flex: none;
+    text-align: right;
+    color: #616c7a;
+  }
+  .foia__single .foia__single__header p.score b {
+    font-family: var(--font-mono);
+    font-weight: 700;
+    color: var(--ink);
+    font-variant-numeric: tabular-nums;
+  }
+  .foia__single .foia__single__main { padding: 9.5px; }
+  .foia__single .title {
+    font-weight: 500;
+    margin: 0 0 9.5px;
+  }
+  .foia__single .title a { color: #4582cc; text-decoration: none; }
+  .foia__single .title a:hover { text-decoration: underline; }
+  .foia__single .summary {
+    margin: 0;
+    color: #333c47;
+  }
+  .foia__single .summary a { color: #4582cc; text-decoration: none; }
+  .foia__single .summary a:hover { text-decoration: underline; }
+
+  .foia__single.excluded { opacity: .65; }
+  .foia__single.excluded .score b { color: #97a1ad; }
+
+  .badge {
+    display: inline-block;
+    padding: 0 .296875rem;
+    border-radius: 4px;
+    background: #97a1ad;
+    color: #f7f8fa;
+    font-weight: 500;
+    white-space: nowrap;
+  }
+  .badge.red,    .badge.failure { background: #cc5c52; }
+  .badge.green,  .badge.success { background: #52cc66; }
+  .badge.blue,   .badge.primary { background: #4582cc; }
+  .badge.yellow, .badge.warning { background: #d3bc35; }
+
+  .small {
+    font-size: .8125em;
+    font-style: normal;
+    line-height: 1.4375em;
+  }
+
+  /* "Show all N requests" carrot toggle */
+  .req-toggle {
+    display: block;
+    width: 100%;
+    background: transparent;
+    border: 0;
+    padding: 3px 0 0 0;
+    margin: 0;
+    font: inherit;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--ink);
+    cursor: pointer;
+    text-align: left;
+    user-select: none;
+  }
+  .req-toggle::before {
+    content: "▸";
+    display: inline-block;
+    margin-right: 8px;
+    color: var(--ink-soft);
+    transition: transform 140ms;
+  }
+  .req-section.expanded .req-toggle::before { transform: rotate(90deg); }
+  .req-section .foia__single.is-extra { display: none; }
+  .req-section.expanded .foia__single.is-extra { display: block; }
 
   details {
     padding: 14px 0 0;
@@ -415,6 +553,13 @@
     </div>
   </div>
 
+  <section class="req-section" id="reqSection">
+    <p class="req-section__heading">Individual requests</p>
+    <div class="req-strip" id="reqStrip" aria-hidden="true"></div>
+    <div class="req-legend" id="reqLegend"></div>
+    <div class="req-cards" id="reqCards"></div>
+    <button class="req-toggle" type="button" id="reqToggle" hidden></button>
+  </section>
 
   <details>
     <summary>Agency response</summary>
@@ -464,7 +609,7 @@
       <p>Each request was scored from −5 to +5 based on how the agency handled it. The transparency score is the average across all requests for that agency.</p>
       <ul class="rubric">
         <li><span class="pt">+5</span><span>Immediate electronic access, little to no redaction</span></li>
-        <li><span class="pt">+4</span><span>Timely access with limited redaction</span></li>
+        <li><span class="pt">+4</span><span>Timely access with minimal redaction</span></li>
         <li><span class="pt">+3</span><span>Delayed access after back and forth</span></li>
         <li><span class="pt">+2</span><span>Access, but required in-person pickup or residency</span></li>
         <li><span class="pt">+1</span><span>Access with excessive redaction</span></li>
@@ -1515,13 +1660,14 @@ const EXAMPLE_TOWN = {
     legitimacy:    "Many were overly broad and we received too many at once, distracting from support for individual citizen requests.",
     other:         "We are reviewing our records portal to make routine documents available online.",
   },
-  requestList: [],
+  requestList: (TOWN_OVERRIDES["Belmont"] && TOWN_OVERRIDES["Belmont"].requestList) || [],
 };
 
 const EXAMPLE_DISTRICT = {
   ...EXAMPLE_TOWN,
   counterpart: "Example Town",
   summary:     "Example values — replace with a real district once data is in.",
+  requestList: (DISTRICT_OVERRIDES["Shaker Regional School District/SAU80"] && DISTRICT_OVERRIDES["Shaker Regional School District/SAU80"].requestList) || [],
 };
 
 const TOWNS = Object.fromEntries(
@@ -1561,6 +1707,141 @@ function fmtScore(n) {
   return "0.0";
 }
 
+/* Individual requests */
+const REQUEST_REASON = {
+  "5":  "immediate electronic access, little to no redaction",
+  "4":  "timely access with limited redaction",
+  "3":  "delayed access after back and forth",
+  "2":  "required in-person pickup or residency",
+  "1":  "access with excessive redaction",
+  "0":  "no responsive documents",
+  "-1": "process confusion, documents not provided",
+  "-2": "rejection on records requiring balancing test",
+  "-3": "acknowledged, never fulfilled",
+  "-4": "rejected records routinely considered public",
+  "-5": "no response at all",
+};
+
+const REQUEST_BADGE = {
+  done:      "green",
+  partial:   "green",
+  no_docs:   "",
+  rejected:  "red",
+  processed: "yellow",
+  ack:       "yellow",
+  submitted: "blue",
+  fix:       "",
+};
+
+const REQUEST_GROUP = {
+  done:      "completed",
+  partial:   "completed",
+  no_docs:   "norecords",
+  rejected:  "rejected",
+  processed: "awaiting",
+  ack:       "awaiting",
+  submitted: "awaiting",
+  fix:       "awaiting",
+};
+const GROUP_META = {
+  completed: { color: "#52cc66", label: "completed" },
+  norecords: { color: "#97a1ad", label: "no records" },
+  awaiting:  { color: "#d3bc35", label: "awaiting" },
+  rejected:  { color: "#cc5c52", label: "rejected" },
+};
+const GROUP_ORDER = ["completed", "norecords", "awaiting", "rejected"];
+
+function fmtReqScore(s) {
+  if (s === null || s === undefined) return "—";   
+  if (s > 0) return "+" + s;
+  if (s < 0) return "−" + Math.abs(s);           
+  return "0";
+}
+
+function escHtml(str) {
+  return String(str).replace(/[&<>"]/g, c => (
+    { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]
+  ));
+}
+
+const VISIBLE_REQUESTS = 3;
+
+function renderRequestList(list) {
+  const section = $("reqSection");
+  const strip   = $("reqStrip");
+  const legend  = $("reqLegend");
+  const cards   = $("reqCards");
+  const toggle  = $("reqToggle");
+
+  section.classList.remove("expanded");
+  strip.innerHTML = legend.innerHTML = cards.innerHTML = "";
+  toggle.hidden = true;
+  if (!Array.isArray(list) || !list.length) {
+    section.hidden = true;
+    return;
+  }
+  section.hidden = false;
+
+  const sorted = [...list].sort((a, b) => {
+    if (!!a.excluded !== !!b.excluded) return a.excluded ? 1 : -1;
+    const sa = (a.score === null || a.score === undefined) ? -Infinity : a.score;
+    const sb = (b.score === null || b.score === undefined) ? -Infinity : b.score;
+    return sb - sa;
+  });
+
+  const counts = { completed: 0, norecords: 0, awaiting: 0, rejected: 0 };
+  sorted.forEach(r => {
+    if (r.excluded) return;
+    const g = REQUEST_GROUP[r.code] || "awaiting";
+    counts[g]++;
+    const seg = document.createElement("div");
+    seg.className = "req-strip__seg";
+    seg.style.background = GROUP_META[g].color;
+    seg.title = (r.status || "") + " · scored " + fmtReqScore(r.score);
+    strip.appendChild(seg);
+  });
+
+  GROUP_ORDER.forEach(g => {
+    const n = counts[g];
+    const span = document.createElement("span");
+    if (!n) span.className = "zero";
+    span.innerHTML =
+      '<span class="dot" style="background:' + (n ? GROUP_META[g].color : "#e3e8ef") + '"></span>'
+      + n + " " + GROUP_META[g].label;
+    legend.appendChild(span);
+  });
+
+  sorted.forEach((r, i) => {
+    const color = REQUEST_BADGE[r.code] || "";
+    let reason;
+    if (r.excluded) reason = "not scored — excluded from the average";
+    else if (r.score !== null && r.score !== undefined && REQUEST_REASON[r.score] !== undefined) reason = REQUEST_REASON[r.score];
+    else reason = (r.status || "").toLowerCase();
+
+    const extraCls = i >= VISIBLE_REQUESTS ? " is-extra" : "";
+    const excludedCls = r.excluded ? " excluded" : "";
+
+    const card = document.createElement("div");
+    card.className = "foia__single" + extraCls + excludedCls;
+    card.innerHTML =
+        '<header class="foia__single__header">'
+      +   '<p><span class="small badge ' + color + '">' + escHtml(r.status) + '</span></p>'
+      +   '<p class="small score">scored <b>' + (r.excluded ? "—" : fmtReqScore(r.score)) + '</b></p>'
+      + '</header>'
+      + '<main class="foia__single__main">'
+      +   '<p class="title"><a href="' + escHtml(r.url) + '" target="_blank" rel="noopener">' + escHtml(r.title) + '</a></p>'
+      +   '<p class="small summary">Filed with the <a href="' + escHtml(r.url) + '" target="_blank" rel="noopener">' + escHtml(r.agency) + '</a>, ' + escHtml(reason) + '</p>'
+      + '</main>';
+    cards.appendChild(card);
+  });
+
+  if (sorted.length > VISIBLE_REQUESTS) {
+    toggle.hidden = false;
+    toggle.textContent = "Show all " + sorted.length + " requests";
+    toggle.dataset.total = String(sorted.length);
+  }
+}
+
 function render(name) {
   const t = CATEGORIES[activeCat][name];
   if (!t) return;
@@ -1592,7 +1873,7 @@ function render(name) {
   );
   $("statExempt").textContent = t.exemptions;
 
-
+  renderRequestList(t.requestList || []);
   renderAgencyResponse(name, t.agencyResponse);
 }
 
@@ -1600,18 +1881,15 @@ function renderAgencyResponse(name, response) {
   $("agencyTown").textContent = name;
   const suffix = $("agencyResponseSuffix");
 
-  // Hide every conditional block; we'll re-show the relevant ones.
   ["responseStats", "rstatStaffTime", "rstatCost", "rstatSelfRating",
    "qaBalancing", "qaLegitimacy", "qaOther", "alternateComment"
   ].forEach(id => $(id).hidden = true);
 
-  // null → haven't responded yet
   if (!response) {
     suffix.textContent = " They have not responded.";
     return;
   }
 
-  // Back-compat: a bare string is treated as an alternate comment.
   if (typeof response === "string") {
     response = { status: "alternate", comment: response };
   }
@@ -1684,6 +1962,14 @@ document.querySelectorAll(".seg-btn").forEach(btn => {
 });
 
 select.addEventListener("change", e => render(e.target.value));
+
+$("reqToggle").addEventListener("click", () => {
+  const section = $("reqSection");
+  const toggle = $("reqToggle");
+  const isOpening = !section.classList.contains("expanded");
+  section.classList.toggle("expanded");
+  toggle.textContent = isOpening ? "Show fewer" : "Show all " + toggle.dataset.total + " requests";
+});
 
 populateDropdown(activeCat);
 const initial = Object.keys(CATEGORIES[activeCat])[0];
