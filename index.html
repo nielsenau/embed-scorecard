@@ -6,18 +6,14 @@
 <title>NH Right-to-Know Transparency Scorecard</title>
 <style>
   :root {
-    --ink: #1a1f2e;
-    --ink-soft: #4a5161;
+    --ink: #294366;          
+    --ink-body: #333c47;     
+    --ink-soft: #4582cc;    
     --paper: #eef3fa;
-    --rule: #e6e4dc;
-    --accent: #c9b537;
-    --warn-bg: #fdf2d6;
-    --warn-ink: #7a5a00;
-    --bad: #b03a3a;
-    --ok: #2e7d4f;
-    --mid: #b8923a;
+    --rule: #e3e8ef;         
+    --accent: #4294f0;      
+    --accent-soft: #bbd6fa;  
     --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-    --font-serif: "Iowan Old Style", "Palatino Linotype", Georgia, serif;
   }
 
   * { box-sizing: border-box; }
@@ -27,7 +23,7 @@
     padding: 0;
     background: transparent;
     font-family: var(--font-sans);
-    color: var(--ink);
+    color: var(--ink-body);
     -webkit-font-smoothing: antialiased;
   }
 
@@ -37,12 +33,41 @@
     padding: 28px 32px 24px;
     background: var(--paper);
     border: 1px solid var(--rule);
-    border-radius: 6px;
+    border-radius: 8px;
   }
+
+  .seg {
+    display: inline-flex;
+    gap: 0;
+    background: #fff;
+    border: 1px solid var(--rule);
+    border-radius: 4px;
+    padding: 0;
+    margin: 0 0 18px;
+    overflow: hidden;
+  }
+  .seg-btn {
+    border: 0;
+    background: transparent;
+    font: inherit;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    padding: 7px 16px;
+    border-radius: 0;
+    cursor: pointer;
+    color: var(--ink-soft);
+    transition: background 140ms, color 140ms;
+  }
+  .seg-btn + .seg-btn { border-left: 1px solid var(--rule); }
+  .seg-btn.active {
+    background: var(--accent);
+    color: #fff;
+  }
+  .seg-btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 
   /* Headline */
   .headline {
-    font-family: var(--font-serif);
     font-size: 22px;
     line-height: 1.45;
     margin: 0 0 22px;
@@ -53,24 +78,22 @@
     color: var(--ink);
   }
   .town-select {
-    font-family: var(--font-serif);
     font-size: 22px;
     font-weight: 700;
-    color: var(--ink);
+    color: var(--accent);
     background: transparent;
     border: none;
-    border-bottom: 2px dotted var(--ink);
+    border-bottom: 2px dotted var(--accent);
     padding: 0 22px 1px 2px;
     cursor: pointer;
     appearance: none;
     -webkit-appearance: none;
-    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'><path d='M0 0l5 6 5-6z' fill='%231a1f2e'/></svg>");
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'><path d='M0 0l5 6 5-6z' fill='%234294f0'/></svg>");
     background-repeat: no-repeat;
     background-position: right 4px center;
   }
   .town-select:focus { outline: 2px solid var(--accent); outline-offset: 2px; }
 
-  /* Meter */
   .meter {
     margin: 0 0 10px;
   }
@@ -81,7 +104,6 @@
     line-height: 1.5;
   }
   .summary {
-    font-family: var(--font-serif);
     font-style: italic;
     font-size: 16px;
     line-height: 1.5;
@@ -100,16 +122,13 @@
   .meter-track {
     position: relative;
     height: 14px;
-    border-radius: 7px;
+    border-radius: 4px;
     background: linear-gradient(
       90deg,
-      #1a1f2e 0%,
-      #2c2f3d 18%,
-      #595a4e 42%,
-      #8a8246 60%,
-      #b8a838 75%,
-      #d9c33a 87%,
-      #ead43c 100%
+      #000000 0%,     
+      #494949 35%,
+      #e6d24c 55%,    
+      #ead43c 100%    
     );
   }
   .meter-dot {
@@ -128,7 +147,6 @@
     transition: left 320ms cubic-bezier(.4,0,.2,1);
   }
 
-  /* Quick stats */
   .quick-stats {
     display: grid;
     grid-template-columns: repeat(5, 1fr);
@@ -168,9 +186,10 @@
     color: var(--ink);
     margin-bottom: 3px;
   }
-  .stat-value.ok { color: var(--ok); }
-  .stat-value.mid { color: var(--mid); }
-  .stat-value.bad { color: var(--bad); }
+  /* All stat values render in heading navy — no semantic coloring. */
+  .stat-value.ok,
+  .stat-value.mid,
+  .stat-value.bad { color: var(--ink); }
   .stat-label {
     font-size: 10px;
     font-weight: 600;
@@ -213,9 +232,7 @@
   .stat:focus-within .tip { opacity: 1; }
 
 
-  /* Collapsible sections */
   details {
-    border-top: 1px solid var(--rule);
     padding: 14px 0 0;
     margin-top: 4px;
   }
@@ -247,7 +264,7 @@
   details .body p { margin: 0 0 8px; }
   details .body .quote {
     font-style: italic;
-    color: var(--ink-soft);
+    color: var(--ink-body);
     margin: 6px 0;
   }
   .rubric {
@@ -284,17 +301,18 @@
 <body>
 
 <div class="scorecard" id="scorecard">
+  <div class="seg" role="tablist" aria-label="Category">
+    <button class="seg-btn active" data-cat="town" role="tab" aria-selected="true">Towns &amp; Cities</button>
+    <button class="seg-btn" data-cat="district" role="tab" aria-selected="false">School Districts</button>
+  </div>
+
   <p class="headline">
     We scored
-    <select class="town-select" id="townSelect" aria-label="Select a town"></select>
+    <select class="town-select" id="townSelect" aria-label="Select an entity"></select>
     a <span class="score" id="score">+0.0</span> for transparency.
   </p>
 
   <div class="meter" aria-hidden="true">
-    <div class="meter-labels">
-      <span>0</span>
-      <span>5</span>
-    </div>
     <div class="meter-track">
       <div class="meter-dot" id="meterDot" style="left: 0%"></div>
     </div>
@@ -365,7 +383,7 @@
   <details>
     <summary>How we scored this</summary>
     <div class="body">
-      <p>Each request was scored from −5 to +5 based on how the agency handled it. The transparency score is the average across all requests for that town.</p>
+      <p>Each request was scored from −5 to +5 based on how the agency handled it. The transparency score is the average across all requests for that agency.</p>
       <ul class="rubric">
         <li><span class="pt">+5</span><span>Immediate electronic access, little to no redaction</span></li>
         <li><span class="pt">+4</span><span>Timely access with limited redaction</span></li>
@@ -385,16 +403,17 @@
 
 <script>
 /* ============================================================
-   DATA — TOWN_OVERRIDES is regenerated by publish.ipynb.
+   regenerated by publish.ipynb.
 
-   Fields per town:
+   Fields per entity:
+     counterpart    : pair towns to school districts 
      score          : number (per-request rubric average, −5..+5)
      requests       : total requests filed
      responded      : requests the agency actually responded to
      graded         : number of cells contributing to the score
      avgReply       : string shown in the Avg. Reply column
      records        : "digital" | "in-person" | "none"
-     pages          : number or string — total pages provided
+     pages          : number - total pages provided
      rejected       : number or string
      exemptions     : number or string
      missedDeadline : true | false
@@ -402,6 +421,7 @@
      summary        : editorial sentence under the meter (italic)
    ============================================================ */
 const DEFAULTS = {
+  counterpart: null,
   score: 0,
   requests: 0,
   responded: 0,
@@ -413,284 +433,1012 @@ const DEFAULTS = {
   exemptions: "—",
   missedDeadline: false,
   agencyResponse: null,
-  summary: "No data yet for this town."
+  summary: "No data yet."
 };
 
 const TOWN_OVERRIDES = {
   "Belmont": {
-    score:          1.83,
-    requests:       12,
-    responded:      11,
-    graded:         9,
-    avgReply:       "24 days",
+    counterpart:    "Shaker Regional School District/SAU80",
+    score:          0.38,
+    requests:       8,
+    responded:      7,
+    graded:         8,
+    avgReply:       "15 days",
     records:        "in-person",
     rejected:       0,
     missedDeadline: true,
     summary:        "Belmont shows mixed compliance with the state's right-to-know law.",
+    agencyResponse: null,
+    requestList: [
+      { id: "200204", title: "AI chat logs", agency: "Belmont Clerk", status: "No Responsive Documents", code: "no_docs", score: 0, url: "https://www.muckrock.com/foi/belmont-3816/ai-chat-logs-belmont-clerk-200204/", excluded: false, notes: "" },
+      { id: "200173", title: "AI policy", agency: "Belmont Clerk", status: "No Responsive Documents", code: "no_docs", score: 0, url: "https://www.muckrock.com/foi/belmont-3816/ai-policy-belmont-clerk-200173/", excluded: false, notes: "" },
+      { id: "201889", title: "Ethics and Conflict of Interest Rules", agency: "Belmont Clerk", status: "Completed", code: "done", score: 4, url: "https://www.muckrock.com/foi/belmont-3816/ethics-and-conflict-of-interest-rules-201889/", excluded: false, notes: "" },
+      { id: "200682", title: "Highest-value RFPs", agency: "Belmont Clerk", status: "Completed", code: "done", score: 2, url: "https://www.muckrock.com/foi/belmont-3816/highest-value-rfps-belmont-clerk-200682/", excluded: false, notes: "" },
+      { id: "207030", title: "Leadership and constituent emails", agency: "Belmont Clerk", status: "Awaiting Response", code: "processed", score: -3, url: "https://www.muckrock.com/foi/belmont-3816/leadership-and-constituent-emails-belmont-clerk-207030/", excluded: false, notes: "" },
+      { id: "201885", title: "PD Chief Performance Evaluation", agency: "Belmont Police Department", status: "No Responsive Documents", code: "no_docs", score: 0, url: "https://www.muckrock.com/foi/belmont-3816/pd-chief-performance-evaluation-201885/", excluded: false, notes: "" },
+      { id: "202341", title: "PD Settlement Agreements", agency: "Belmont Police Department", status: "No Responsive Documents", code: "no_docs", score: 0, url: "https://www.muckrock.com/foi/belmont-3816/pd-settlement-agreements-202341/", excluded: false, notes: "" },
+      { id: "207088", title: "Performance Evaluation", agency: "Belmont Clerk", status: "No Responsive Documents", code: "no_docs", score: 0, url: "https://www.muckrock.com/foi/belmont-3816/performance-evaluation-belmont-clerk-207088/", excluded: false, notes: "" },
+    ],
   },
   "Berlin": {
-    score:          -1.58,
-    requests:       12,
-    responded:      8,
-    graded:         10,
-    avgReply:       "11 days",
+    counterpart:    "Berlin School District/SAU 3",
+    score:          -1.71,
+    requests:       8,
+    responded:      5,
+    graded:         7,
+    avgReply:       "8 days",
     records:        "in-person",
     rejected:       1,
     missedDeadline: true,
     summary:        "Berlin is slow to respond and frequently rejects records routinely considered public.",
+    agencyResponse: null,
+    requestList: [
+      { id: "200201", title: "AI chat logs", agency: "Berlin Clerk", status: "No Responsive Documents", code: "no_docs", score: 0, url: "https://www.muckrock.com/foi/berlin-3819/ai-chat-logs-berlin-clerk-200201/", excluded: false, notes: "" },
+      { id: "200170", title: "AI policy", agency: "Berlin Clerk", status: "No Responsive Documents", code: "no_docs", score: 0, url: "https://www.muckrock.com/foi/berlin-3819/ai-policy-berlin-clerk-200170/", excluded: false, notes: "" },
+      { id: "211278", title: "Ethics and Conflict of Interest Rules", agency: "Berlin Clerk", status: "Processing", code: "submitted", score: null, url: "https://www.muckrock.com/foi/berlin-3819/ethics-and-conflict-of-interest-rules-berlin-clerk-211278/", excluded: false, notes: "" },
+      { id: "200679", title: "Highest-value RFPs", agency: "Berlin Clerk", status: "Completed", code: "done", score: 2, url: "https://www.muckrock.com/foi/berlin-3819/highest-value-rfps-berlin-clerk-200679/", excluded: false, notes: "" },
+      { id: "207042", title: "Leadership and constituent emails", agency: "Berlin Clerk", status: "Rejected", code: "rejected", score: -4, url: "https://www.muckrock.com/foi/berlin-3819/leadership-and-constituent-emails-berlin-clerk-207042/", excluded: false, notes: "" },
+      { id: "199803", title: "PD Chief Performance Evaluation", agency: "Berlin Police Department", status: "Awaiting Acknowledgement", code: "ack", score: -5, url: "https://www.muckrock.com/foi/berlin-3819/pd-chief-performance-evaluation-berlin-police-department-199803/", excluded: false, notes: "" },
+      { id: "202343", title: "PD Settlement Agreements", agency: "Berlin Police Department", status: "Awaiting Acknowledgement", code: "ack", score: -5, url: "https://www.muckrock.com/foi/berlin-3819/pd-settlement-agreements-202343/", excluded: false, notes: "" },
+      { id: "207086", title: "Performance Evaluation", agency: "Berlin Clerk", status: "No Responsive Documents", code: "no_docs", score: 0, url: "https://www.muckrock.com/foi/berlin-3819/performance-evaluation-berlin-clerk-207086/", excluded: false, notes: "" },
+    ],
   },
   "Bow": {
-    score:          -1.39,
-    requests:       12,
-    responded:      4,
-    graded:         9,
-    avgReply:       "43 days",
+    counterpart:    "Bow School District/SAU67",
+    score:          -2.0,
+    requests:       8,
+    responded:      2,
+    graded:         5,
+    avgReply:       "83 days",
     records:        "digital",
     rejected:       0,
     missedDeadline: true,
     summary:        "Bow is slow to respond and frequently rejects records routinely considered public.",
+    agencyResponse: null,
+    requestList: [
+      { id: "200208", title: "AI chat logs", agency: "Bow Clerk", status: "Awaiting Response", code: "processed", score: null, url: "https://www.muckrock.com/foi/bow-3822/ai-chat-logs-bow-clerk-200208/", excluded: false, notes: "" },
+      { id: "200166", title: "AI policy", agency: "Bow Clerk", status: "No Responsive Documents", code: "no_docs", score: 0, url: "https://www.muckrock.com/foi/bow-3822/ai-policy-bow-clerk-200166/", excluded: false, notes: "" },
+      { id: "201898", title: "Ethics and Conflict of Interest Rules", agency: "Bow Clerk", status: "Completed", code: "done", score: 3, url: "https://www.muckrock.com/foi/bow-3822/ethics-and-conflict-of-interest-rules-201898/", excluded: false, notes: "" },
+      { id: "200671", title: "Highest-value RFPs", agency: "Bow Clerk", status: "Awaiting Acknowledgement", code: "ack", score: -5, url: "https://www.muckrock.com/foi/bow-3822/highest-value-rfps-bow-clerk-200671/", excluded: false, notes: "" },
+      { id: "207027", title: "Leadership and constituent emails", agency: "Bow Clerk", status: "Awaiting Response", code: "processed", score: null, url: "https://www.muckrock.com/foi/bow-3822/leadership-and-constituent-emails-bow-clerk-207027/", excluded: false, notes: "" },
+      { id: "199789", title: "PD Chief Performance Evaluation", agency: "Bow Police Department", status: "Awaiting Acknowledgement", code: "ack", score: -5, url: "https://www.muckrock.com/foi/bow-3822/pd-chief-performance-evaluation-bow-police-department-199789/", excluded: false, notes: "" },
+      { id: "202356", title: "PD Settlement Agreements", agency: "Bow Police Department", status: "Awaiting Response", code: "processed", score: -3, url: "https://www.muckrock.com/foi/bow-3822/pd-settlement-agreements-202356/", excluded: false, notes: "" },
+      { id: "207078", title: "Performance Evaluation", agency: "Bow Clerk", status: "Awaiting Response", code: "processed", score: null, url: "https://www.muckrock.com/foi/bow-3822/performance-evaluation-bow-clerk-207078/", excluded: false, notes: "" },
+    ],
   },
   "Claremont": {
-    score:          0.43,
-    requests:       12,
-    responded:      10,
-    graded:         11,
-    avgReply:       "10 days",
+    counterpart:    "Claremont School District/SAU6",
+    score:          -1.14,
+    requests:       8,
+    responded:      7,
+    graded:         7,
+    avgReply:       "12 days",
+    records:        "digital",
+    rejected:       4,
+    missedDeadline: false,
+    summary:        "Claremont is slow to respond and frequently rejects records routinely considered public.",
+    agencyResponse: null,
+    requestList: [
+      { id: "200195", title: "AI chat logs", agency: "Claremont Clerk", status: "Rejected", code: "rejected", score: -4, url: "https://www.muckrock.com/foi/claremont-3840/ai-chat-logs-claremont-clerk-200195/", excluded: false, notes: "" },
+      { id: "200160", title: "AI policy", agency: "Claremont Clerk", status: "Rejected", code: "rejected", score: -4, url: "https://www.muckrock.com/foi/claremont-3840/ai-policy-claremont-clerk-200160/", excluded: false, notes: "" },
+      { id: "211277", title: "Ethics and Conflict of Interest Rules", agency: "Claremont Clerk", status: "Processing", code: "submitted", score: null, url: "https://www.muckrock.com/foi/claremont-3840/ethics-and-conflict-of-interest-rules-claremont-clerk-211277/", excluded: false, notes: "" },
+      { id: "200678", title: "Highest-value RFPs", agency: "Claremont Clerk", status: "Rejected", code: "rejected", score: -4, url: "https://www.muckrock.com/foi/claremont-3840/highest-value-rfps-claremont-clerk-200678/", excluded: false, notes: "" },
+      { id: "207041", title: "Leadership and constituent emails", agency: "Claremont Clerk", status: "Rejected", code: "rejected", score: -4, url: "https://www.muckrock.com/foi/claremont-3840/leadership-and-constituent-emails-claremont-clerk-207041/", excluded: false, notes: "" },
+      { id: "199802", title: "PD Chief Performance Evaluation", agency: "Claremont Police Department", status: "Completed", code: "done", score: 4, url: "https://www.muckrock.com/foi/claremont-3840/pd-chief-performance-evaluation-claremont-police-department-199802/", excluded: false, notes: "" },
+      { id: "202344", title: "PD Settlement Agreements", agency: "Claremont Police Department", status: "Completed", code: "done", score: 4, url: "https://www.muckrock.com/foi/claremont-3840/pd-settlement-agreements-202344/", excluded: false, notes: "" },
+      { id: "207085", title: "Performance Evaluation", agency: "Claremont Clerk", status: "No Responsive Documents", code: "no_docs", score: 0, url: "https://www.muckrock.com/foi/claremont-3840/performance-evaluation-claremont-clerk-207085/", excluded: false, notes: "" },
+    ],
+  },
+  "Concord": {
+    counterpart:    "Concord School District/SAU8",
+    score:          -2.43,
+    requests:       9,
+    responded:      5,
+    graded:         7,
+    avgReply:       "27 days",
     records:        "digital",
     rejected:       4,
     missedDeadline: true,
-    summary:        "Claremont shows mixed compliance with the state's right-to-know law.",
-  },
-  "Concord": {
-    score:          -1.47,
-    requests:       13,
-    responded:      9,
-    graded:         11,
-    avgReply:       "23 days",
-    records:        "digital",
-    rejected:       5,
-    missedDeadline: true,
     summary:        "Concord is slow to respond and frequently rejects records routinely considered public.",
+    agencyResponse: null,
+    requestList: [
+      { id: "200199", title: "AI chat logs", agency: "Concord City Clerk", status: "Rejected", code: "rejected", score: -4, url: "https://www.muckrock.com/foi/concord-3844/ai-chat-logs-concord-city-clerk-200199/", excluded: false, notes: "" },
+      { id: "200158", title: "AI policy", agency: "Concord City Clerk", status: "Rejected", code: "rejected", score: -4, url: "https://www.muckrock.com/foi/concord-3844/ai-policy-concord-city-clerk-200158/", excluded: false, notes: "" },
+      { id: "199784", title: "Ethics and Conflict of Interest Rules", agency: "Concord City Clerk", status: "Completed", code: "done", score: 5, url: "https://www.muckrock.com/foi/concord-3844/ethics-and-conflict-of-interest-rules-concord-city-clerk-199784/", excluded: false, notes: "" },
+      { id: "200687", title: "Highest-value RFPs", agency: "Concord City Clerk", status: "Rejected", code: "rejected", score: -4, url: "https://www.muckrock.com/foi/concord-3844/highest-value-rfps-concord-city-clerk-200687/", excluded: false, notes: "" },
+      { id: "207039", title: "Leadership and constituent emails", agency: "Concord City Clerk", status: "Awaiting Response", code: "processed", score: null, url: "https://www.muckrock.com/foi/concord-3844/leadership-and-constituent-emails-concord-city-clerk-207039/", excluded: false, notes: "" },
+      { id: "199801", title: "PD Chief Performance Evaluation", agency: "Concord Police Department", status: "Awaiting Response", code: "processed", score: -3, url: "https://www.muckrock.com/foi/concord-3844/pd-chief-performance-evaluation-concord-police-department-199801/", excluded: false, notes: "" },
+      { id: "202345", title: "PD Settlement Agreements", agency: "Concord Police Department", status: "Awaiting Response", code: "processed", score: -3, url: "https://www.muckrock.com/foi/concord-3844/pd-settlement-agreements-202345/", excluded: false, notes: "" },
+      { id: "207075", title: "Performance Evaluation", agency: "Concord City Clerk", status: "Rejected", code: "rejected", score: -4, url: "https://www.muckrock.com/foi/concord-3844/performance-evaluation-concord-city-clerk-207075/", excluded: false, notes: "" },
+      { id: "211349", title: "RFP List", agency: "Concord City Clerk", status: "Awaiting Acknowledgement", code: "ack", score: null, url: "https://www.muckrock.com/foi/concord-3844/rfp-list-211349/", excluded: true, notes: "" },
+    ],
   },
   "Derry": {
-    score:          1.94,
-    requests:       12,
-    responded:      10,
-    graded:         12,
-    avgReply:       "10 days",
+    counterpart:    "Derry Cooperative School District/SAU10",
+    score:          1.88,
+    requests:       8,
+    responded:      7,
+    graded:         8,
+    avgReply:       "12 days",
     records:        "digital",
     rejected:       0,
     missedDeadline: true,
     summary:        "Derry shows mixed compliance with the state's right-to-know law.",
+    agencyResponse: null,
+    requestList: [
+      { id: "200206", title: "AI chat logs", agency: "Derry Clerk", status: "No Responsive Documents", code: "no_docs", score: 0, url: "https://www.muckrock.com/foi/derry-3853/ai-chat-logs-derry-clerk-200206/", excluded: false, notes: "" },
+      { id: "200164", title: "AI policy", agency: "Derry Clerk", status: "No Responsive Documents", code: "no_docs", score: 0, url: "https://www.muckrock.com/foi/derry-3853/ai-policy-derry-clerk-200164/", excluded: false, notes: "" },
+      { id: "201900", title: "Ethics and Conflict of Interest Rules", agency: "Derry Clerk", status: "Completed", code: "done", score: 5, url: "https://www.muckrock.com/foi/derry-3853/ethics-and-conflict-of-interest-rules-201900/", excluded: false, notes: "" },
+      { id: "200669", title: "Highest-value RFPs", agency: "Derry Clerk", status: "Completed", code: "done", score: 4, url: "https://www.muckrock.com/foi/derry-3853/highest-value-rfps-derry-clerk-200669/", excluded: false, notes: "" },
+      { id: "207025", title: "Leadership and constituent emails", agency: "Derry Clerk", status: "Awaiting Response", code: "processed", score: -3, url: "https://www.muckrock.com/foi/derry-3853/leadership-and-constituent-emails-derry-clerk-207025/", excluded: false, notes: "" },
+      { id: "199787", title: "PD Chief Performance Evaluation", agency: "Derry Police Department", status: "Completed", code: "done", score: 5, url: "https://www.muckrock.com/foi/derry-3853/pd-chief-performance-evaluation-derry-police-department-199787/", excluded: false, notes: "" },
+      { id: "201907", title: "PD Settlement Agreements", agency: "Derry Police Department", status: "Completed", code: "done", score: 4, url: "https://www.muckrock.com/foi/derry-3853/pd-settlement-agreements-201907/", excluded: false, notes: "" },
+      { id: "207076", title: "Performance Evaluation", agency: "Derry Clerk", status: "No Responsive Documents", code: "no_docs", score: 0, url: "https://www.muckrock.com/foi/derry-3853/performance-evaluation-derry-clerk-207076/", excluded: false, notes: "" },
+    ],
   },
   "Dover": {
-    score:          -1.56,
-    requests:       12,
-    responded:      3,
-    graded:         11,
-    avgReply:       "11 days",
+    counterpart:    "Dover School District/SAU11",
+    score:          -3.25,
+    requests:       8,
+    responded:      2,
+    graded:         8,
+    avgReply:       "16 days",
     records:        "in-person",
     rejected:       0,
     missedDeadline: true,
-    summary:        "Dover is slow to respond and frequently rejects records routinely considered public.",
+    summary:        "Dover is largely unresponsive to public records requests filed under the state's right-to-know law.",
+    agencyResponse: null,
+    requestList: [
+      { id: "200200", title: "AI chat logs", agency: "City Clerk", status: "Awaiting Acknowledgement", code: "ack", score: -5, url: "https://www.muckrock.com/foi/dover-3855/ai-chat-logs-city-clerk-200200/", excluded: false, notes: "" },
+      { id: "200157", title: "AI policy", agency: "City Clerk", status: "Awaiting Acknowledgement", code: "ack", score: -5, url: "https://www.muckrock.com/foi/dover-3855/ai-policy-city-clerk-200157/", excluded: false, notes: "" },
+      { id: "199785", title: "Ethics and Conflict of Interest Rules", agency: "City Clerk", status: "Awaiting Acknowledgement", code: "ack", score: -5, url: "https://www.muckrock.com/foi/dover-3855/ethics-and-conflict-of-interest-rules-city-clerk-199785/", excluded: false, notes: "" },
+      { id: "200688", title: "Highest-value RFPs", agency: "City Clerk", status: "Awaiting Acknowledgement", code: "ack", score: -5, url: "https://www.muckrock.com/foi/dover-3855/highest-value-rfps-city-clerk-200688/", excluded: false, notes: "" },
+      { id: "207038", title: "Leadership and constituent emails", agency: "City Clerk", status: "Awaiting Acknowledgement", code: "ack", score: -5, url: "https://www.muckrock.com/foi/dover-3855/leadership-and-constituent-emails-city-clerk-207038/", excluded: false, notes: "" },
+      { id: "201883", title: "PD Chief Performance Evaluation", agency: "Dover Police Department", status: "Completed", code: "done", score: 2, url: "https://www.muckrock.com/foi/dover-3855/pd-chief-performance-evaluation-201883/", excluded: false, notes: "" },
+      { id: "202338", title: "PD Settlement Agreements", agency: "Dover Police Department", status: "Completed", code: "done", score: 2, url: "https://www.muckrock.com/foi/dover-3855/pd-settlement-agreements-202338/", excluded: false, notes: "" },
+      { id: "207074", title: "Performance Evaluation", agency: "City Clerk", status: "Awaiting Acknowledgement", code: "ack", score: -5, url: "https://www.muckrock.com/foi/dover-3855/performance-evaluation-city-clerk-207074/", excluded: false, notes: "" },
+    ],
   },
   "Durham": {
-    score:          3.5,
-    requests:       12,
-    responded:      6,
-    graded:         6,
-    avgReply:       "8 days",
+    counterpart:    "Oyster River Cooperative School District/SAU5",
+    score:          5.0,
+    requests:       8,
+    responded:      2,
+    graded:         2,
+    avgReply:       "4 days",
     records:        "digital",
     rejected:       0,
     missedDeadline: false,
     summary:        "Durham responded to most requests quickly and in full.",
+    agencyResponse: null,
+    requestList: [
+      { id: "211333", title: "AI chat logs", agency: "Town Of Durham", status: "Processing", code: "submitted", score: null, url: "https://www.muckrock.com/foi/durham-3859/ai-chat-logs-town-of-durham-211333/", excluded: false, notes: "" },
+      { id: "211335", title: "AI policy", agency: "Town Of Durham", status: "Processing", code: "submitted", score: null, url: "https://www.muckrock.com/foi/durham-3859/ai-policy-town-of-durham-211335/", excluded: false, notes: "" },
+      { id: "211276", title: "Ethics and Conflict of Interest Rules", agency: "Town Of Durham", status: "Processing", code: "submitted", score: null, url: "https://www.muckrock.com/foi/durham-3859/ethics-and-conflict-of-interest-rules-town-of-durham-211276/", excluded: false, notes: "" },
+      { id: "211280", title: "Highest-value RFPs", agency: "Town Of Durham", status: "Processing", code: "submitted", score: null, url: "https://www.muckrock.com/foi/durham-3859/highest-value-rfps-town-of-durham-211280/", excluded: false, notes: "" },
+      { id: "211282", title: "Leadership and constituent emails", agency: "Town Of Durham", status: "Processing", code: "submitted", score: null, url: "https://www.muckrock.com/foi/durham-3859/leadership-and-constituent-emails-211282/", excluded: false, notes: "" },
+      { id: "201882", title: "PD Chief Performance Evaluation", agency: "Durham Police Department", status: "Completed", code: "done", score: 5, url: "https://www.muckrock.com/foi/durham-3859/pd-chief-performance-evaluation-201882/", excluded: false, notes: "" },
+      { id: "202359", title: "PD Settlement Agreements", agency: "Durham Police Department", status: "Completed", code: "done", score: 5, url: "https://www.muckrock.com/foi/durham-3859/pd-settlement-agreements-202359/", excluded: false, notes: "" },
+      { id: "211281", title: "Performance Evaluation", agency: "Town Of Durham", status: "Processing", code: "submitted", score: null, url: "https://www.muckrock.com/foi/durham-3859/performance-evaluation-211281/", excluded: false, notes: "" },
+    ],
   },
   "Franklin": {
-    score:          1.31,
-    requests:       12,
-    responded:      8,
-    graded:         9,
-    avgReply:       "18 days",
+    counterpart:    "Franklin School District/SAU18",
+    score:          0.4,
+    requests:       8,
+    responded:      4,
+    graded:         5,
+    avgReply:       "32 days",
     records:        "digital",
     rejected:       1,
     missedDeadline: true,
     summary:        "Franklin shows mixed compliance with the state's right-to-know law.",
+    agencyResponse: null,
+    requestList: [
+      { id: "211332", title: "AI chat logs", agency: "Franklin Clerk", status: "Processing", code: "submitted", score: null, url: "https://www.muckrock.com/foi/franklin-3874/ai-chat-logs-franklin-clerk-211332/", excluded: false, notes: "" },
+      { id: "211334", title: "AI policy", agency: "Franklin Clerk", status: "Processing", code: "submitted", score: null, url: "https://www.muckrock.com/foi/franklin-3874/ai-policy-franklin-clerk-211334/", excluded: false, notes: "" },
+      { id: "201891", title: "Ethics and Conflict of Interest Rules", agency: "Franklin Clerk", status: "Completed", code: "done", score: 5, url: "https://www.muckrock.com/foi/franklin-3874/ethics-and-conflict-of-interest-rules-201891/", excluded: false, notes: "" },
+      { id: "211279", title: "Highest-value RFPs", agency: "Franklin Clerk", status: "Processing", code: "submitted", score: null, url: "https://www.muckrock.com/foi/franklin-3874/highest-value-rfps-franklin-clerk-211279/", excluded: false, notes: "" },
+      { id: "207037", title: "Leadership and constituent emails", agency: "Franklin Clerk", status: "Awaiting Response", code: "processed", score: -3, url: "https://www.muckrock.com/foi/franklin-3874/leadership-and-constituent-emails-franklin-clerk-207037/", excluded: false, notes: "" },
+      { id: "199800", title: "PD Chief Performance Evaluation", agency: "Franklin Police Department", status: "Rejected", code: "rejected", score: -4, url: "https://www.muckrock.com/foi/franklin-3874/pd-chief-performance-evaluation-franklin-police-department-199800/", excluded: false, notes: "" },
+      { id: "202346", title: "PD Settlement Agreements", agency: "Franklin Police Department", status: "Completed", code: "done", score: 4, url: "https://www.muckrock.com/foi/franklin-3874/pd-settlement-agreements-202346/", excluded: false, notes: "" },
+      { id: "207084", title: "Performance Evaluation", agency: "Franklin Clerk", status: "No Responsive Documents", code: "no_docs", score: 0, url: "https://www.muckrock.com/foi/franklin-3874/performance-evaluation-franklin-clerk-207084/", excluded: false, notes: "" },
+    ],
   },
   "Gorham": {
-    score:          -1.94,
-    requests:       12,
+    counterpart:    "Gorham School District/SAU20",
+    score:          -0.62,
+    requests:       8,
     responded:      7,
-    graded:         12,
+    graded:         8,
     avgReply:       "10 days",
     records:        "none",
     rejected:       0,
     missedDeadline: true,
     summary:        "Gorham is slow to respond and frequently rejects records routinely considered public.",
+    agencyResponse: null,
+    requestList: [
+      { id: "200209", title: "AI chat logs", agency: "Gorham Clerk", status: "No Responsive Documents", code: "no_docs", score: 0, url: "https://www.muckrock.com/foi/gorham-3881/ai-chat-logs-gorham-clerk-200209/", excluded: false, notes: "" },
+      { id: "200167", title: "AI policy", agency: "Gorham Clerk", status: "No Responsive Documents", code: "no_docs", score: 0, url: "https://www.muckrock.com/foi/gorham-3881/ai-policy-gorham-clerk-200167/", excluded: false, notes: "" },
+      { id: "201897", title: "Ethics and Conflict of Interest Rules", agency: "Gorham Clerk", status: "No Responsive Documents", code: "no_docs", score: 0, url: "https://www.muckrock.com/foi/gorham-3881/ethics-and-conflict-of-interest-rules-201897/", excluded: false, notes: "" },
+      { id: "200672", title: "Highest-value RFPs", agency: "Gorham Clerk", status: "No Responsive Documents", code: "no_docs", score: 0, url: "https://www.muckrock.com/foi/gorham-3881/highest-value-rfps-gorham-clerk-200672/", excluded: false, notes: "" },
+      { id: "207028", title: "Leadership and constituent emails", agency: "Gorham Clerk", status: "Awaiting Acknowledgement", code: "ack", score: -5, url: "https://www.muckrock.com/foi/gorham-3881/leadership-and-constituent-emails-gorham-clerk-207028/", excluded: false, notes: "" },
+      { id: "199790", title: "PD Chief Performance Evaluation", agency: "Gorham Police Department", status: "No Responsive Documents", code: "no_docs", score: 0, url: "https://www.muckrock.com/foi/gorham-3881/pd-chief-performance-evaluation-gorham-police-department-199790/", excluded: false, notes: "" },
+      { id: "202355", title: "PD Settlement Agreements", agency: "Gorham Police Department", status: "No Responsive Documents", code: "no_docs", score: 0, url: "https://www.muckrock.com/foi/gorham-3881/pd-settlement-agreements-202355/", excluded: false, notes: "" },
+      { id: "207079", title: "Performance Evaluation", agency: "Gorham Clerk", status: "No Responsive Documents", code: "no_docs", score: 0, url: "https://www.muckrock.com/foi/gorham-3881/performance-evaluation-gorham-clerk-207079/", excluded: false, notes: "" },
+    ],
   },
   "Hanover": {
-    score:          1.35,
-    requests:       12,
-    responded:      11,
-    graded:         11,
-    avgReply:       "11 days",
+    counterpart:    "Interstate School District/SAU70",
+    score:          -0.25,
+    requests:       9,
+    responded:      8,
+    graded:         8,
+    avgReply:       "14 days",
     records:        "in-person",
     rejected:       2,
     missedDeadline: false,
     summary:        "Hanover shows mixed compliance with the state's right-to-know law.",
+    agencyResponse: null,
+    requestList: [
+      { id: "200210", title: "AI chat logs", agency: "Hanover Clerk", status: "No Responsive Documents", code: "no_docs", score: 0, url: "https://www.muckrock.com/foi/hanover-3893/ai-chat-logs-hanover-clerk-200210/", excluded: false, notes: "" },
+      { id: "200168", title: "AI policy", agency: "Hanover Clerk", status: "No Responsive Documents", code: "no_docs", score: 0, url: "https://www.muckrock.com/foi/hanover-3893/ai-policy-hanover-clerk-200168/", excluded: false, notes: "" },
+      { id: "201896", title: "Ethics and Conflict of Interest Rules", agency: "Hanover Clerk", status: "Awaiting Response", code: "processed", score: null, url: "https://www.muckrock.com/foi/hanover-3893/ethics-and-conflict-of-interest-rules-201896/", excluded: false, notes: "" },
+      { id: "200673", title: "Highest-value RFPs", agency: "Hanover Clerk", status: "Rejected", code: "rejected", score: -4, url: "https://www.muckrock.com/foi/hanover-3893/highest-value-rfps-hanover-clerk-200673/", excluded: false, notes: "" },
+      { id: "207029", title: "Leadership and constituent emails", agency: "Hanover Clerk", status: "Completed", code: "done", score: 2, url: "https://www.muckrock.com/foi/hanover-3893/leadership-and-constituent-emails-hanover-clerk-207029/", excluded: false, notes: "" },
+      { id: "199791", title: "PD Chief Performance Evaluation", agency: "Hanover Police Department", status: "Completed", code: "done", score: 4, url: "https://www.muckrock.com/foi/hanover-3893/pd-chief-performance-evaluation-hanover-police-department-199791/", excluded: false, notes: "" },
+      { id: "206126", title: "PD Settlement Agreements", agency: "Hanover Police Department", status: "No Responsive Documents", code: "no_docs", score: 0, url: "https://www.muckrock.com/foi/hanover-3893/pd-settlement-agreements-206126/", excluded: false, notes: "" },
+      { id: "202353", title: "PD Settlement Agreements", agency: "Hanover Police Department", status: "No Responsive Documents", code: "no_docs", score: 0, url: "https://www.muckrock.com/foi/hanover-3893/pd-settlement-agreements-202353/", excluded: false, notes: "" },
+      { id: "207080", title: "Performance Evaluation", agency: "Hanover Clerk", status: "Rejected", code: "rejected", score: -4, url: "https://www.muckrock.com/foi/hanover-3893/performance-evaluation-hanover-clerk-207080/", excluded: false, notes: "" },
+    ],
   },
   "Hopkinton": {
-    score:          0.75,
-    requests:       12,
-    responded:      12,
-    graded:         10,
-    avgReply:       "18 days",
+    counterpart:    "Hopkinton School District/SAU66",
+    score:          0.0,
+    requests:       8,
+    responded:      8,
+    graded:         6,
+    avgReply:       "27 days",
     records:        "digital",
     rejected:       1,
     missedDeadline: false,
     summary:        "Hopkinton shows mixed compliance with the state's right-to-know law.",
+    agencyResponse: null,
+    requestList: [
+      { id: "200207", title: "AI chat logs", agency: "Hopkinton Clerk", status: "No Responsive Documents", code: "no_docs", score: 0, url: "https://www.muckrock.com/foi/hopkinton-3905/ai-chat-logs-hopkinton-clerk-200207/", excluded: false, notes: "" },
+      { id: "200165", title: "AI policy", agency: "Hopkinton Clerk", status: "No Responsive Documents", code: "no_docs", score: 0, url: "https://www.muckrock.com/foi/hopkinton-3905/ai-policy-hopkinton-clerk-200165/", excluded: false, notes: "" },
+      { id: "201899", title: "Ethics and Conflict of Interest Rules", agency: "Hopkinton Clerk", status: "Completed", code: "done", score: 4, url: "https://www.muckrock.com/foi/hopkinton-3905/ethics-and-conflict-of-interest-rules-201899/", excluded: false, notes: "" },
+      { id: "200670", title: "Highest-value RFPs", agency: "Hopkinton Clerk", status: "Fix Required", code: "fix", score: null, url: "https://www.muckrock.com/foi/hopkinton-3905/highest-value-rfps-hopkinton-clerk-200670/", excluded: true, notes: "" },
+      { id: "207026", title: "Leadership and constituent emails", agency: "Hopkinton Clerk", status: "Partially Completed", code: "partial", score: null, url: "https://www.muckrock.com/foi/hopkinton-3905/leadership-and-constituent-emails-hopkinton-clerk-207026/", excluded: false, notes: "" },
+      { id: "199788", title: "PD Chief Performance Evaluation", agency: "Hopkinton Police Department", status: "No Responsive Documents", code: "no_docs", score: 0, url: "https://www.muckrock.com/foi/hopkinton-3905/pd-chief-performance-evaluation-hopkinton-police-department-199788/", excluded: false, notes: "" },
+      { id: "202358", title: "PD Settlement Agreements", agency: "Hopkinton Police Department", status: "No Responsive Documents", code: "no_docs", score: 0, url: "https://www.muckrock.com/foi/hopkinton-3905/pd-settlement-agreements-202358/", excluded: false, notes: "" },
+      { id: "207077", title: "Performance Evaluation", agency: "Hopkinton Clerk", status: "Rejected", code: "rejected", score: -4, url: "https://www.muckrock.com/foi/hopkinton-3905/performance-evaluation-hopkinton-clerk-207077/", excluded: false, notes: "" },
+    ],
   },
   "Keene": {
-    score:          0.75,
-    requests:       12,
-    responded:      7,
-    graded:         12,
-    avgReply:       "19 days",
+    counterpart:    "Keene School District/SAU29",
+    score:          1.75,
+    requests:       8,
+    responded:      6,
+    graded:         8,
+    avgReply:       "21 days",
     records:        "digital",
     rejected:       0,
     missedDeadline: true,
     summary:        "Keene shows mixed compliance with the state's right-to-know law.",
+    agencyResponse: null,
+    requestList: [
+      { id: "200197", title: "AI chat logs", agency: "City Clerk's Office", status: "No Responsive Documents", code: "no_docs", score: 0, url: "https://www.muckrock.com/foi/keene-3910/ai-chat-logs-city-clerks-office-200197/", excluded: false, notes: "" },
+      { id: "200156", title: "AI policy", agency: "City Clerk's Office", status: "Completed", code: "done", score: 4, url: "https://www.muckrock.com/foi/keene-3910/ai-policy-city-clerks-office-200156/", excluded: false, notes: "" },
+      { id: "199782", title: "Ethics and Conflict of Interest Rules", agency: "City Clerk's Office", status: "Completed", code: "done", score: 4, url: "https://www.muckrock.com/foi/keene-3910/ethics-and-conflict-of-interest-rules-city-clerks-office-199782/", excluded: false, notes: "" },
+      { id: "200685", title: "Highest-value RFPs", agency: "City Clerk's Office", status: "Awaiting Response", code: "processed", score: -3, url: "https://www.muckrock.com/foi/keene-3910/highest-value-rfps-city-clerks-office-200685/", excluded: false, notes: "" },
+      { id: "207036", title: "Leadership and constituent emails", agency: "City Clerk's Office", status: "Awaiting Response", code: "processed", score: -3, url: "https://www.muckrock.com/foi/keene-3910/leadership-and-constituent-emails-city-clerks-office-207036/", excluded: false, notes: "" },
+      { id: "199798", title: "PD Chief Performance Evaluation", agency: "Keene Police Department", status: "Completed", code: "done", score: 4, url: "https://www.muckrock.com/foi/keene-3910/pd-chief-performance-evaluation-keene-police-department-199798/", excluded: false, notes: "" },
+      { id: "202348", title: "PD Settlement Agreements", agency: "Keene Police Department", status: "Completed", code: "done", score: 4, url: "https://www.muckrock.com/foi/keene-3910/pd-settlement-agreements-202348/", excluded: false, notes: "" },
+      { id: "207091", title: "Performance Evaluation", agency: "City Clerk's Office", status: "Completed", code: "done", score: 4, url: "https://www.muckrock.com/foi/keene-3910/performance-evaluation-city-clerks-office-207091/", excluded: false, notes: "" },
+    ],
   },
   "Laconia": {
-    score:          1.32,
-    requests:       13,
-    responded:      13,
-    graded:         13,
-    avgReply:       "9 days",
+    counterpart:    "Laconia School District/SAU30",
+    score:          0.56,
+    requests:       9,
+    responded:      9,
+    graded:         9,
+    avgReply:       "6 days",
     records:        "in-person",
     rejected:       2,
     missedDeadline: false,
     summary:        "Laconia shows mixed compliance with the state's right-to-know law.",
+    agencyResponse: null,
+    requestList: [
+      { id: "200194", title: "AI chat logs", agency: "Laconia Clerk", status: "No Responsive Documents", code: "no_docs", score: 0, url: "https://www.muckrock.com/foi/laconia-3913/ai-chat-logs-laconia-clerk-200194/", excluded: false, notes: "" },
+      { id: "200155", title: "AI policy", agency: "Laconia Clerk", status: "No Responsive Documents", code: "no_docs", score: 0, url: "https://www.muckrock.com/foi/laconia-3913/ai-policy-laconia-clerk-200155/", excluded: false, notes: "" },
+      { id: "201892", title: "Ethics and Conflict of Interest Rules", agency: "Laconia Clerk", status: "Completed", code: "done", score: 2, url: "https://www.muckrock.com/foi/laconia-3913/ethics-and-conflict-of-interest-rules-201892/", excluded: false, notes: "" },
+      { id: "200677", title: "Highest-value RFPs", agency: "Laconia Clerk", status: "Completed", code: "done", score: 2, url: "https://www.muckrock.com/foi/laconia-3913/highest-value-rfps-laconia-clerk-200677/", excluded: false, notes: "" },
+      { id: "207035", title: "Leadership and constituent emails", agency: "Laconia Clerk", status: "Rejected", code: "rejected", score: -4, url: "https://www.muckrock.com/foi/laconia-3913/leadership-and-constituent-emails-laconia-clerk-207035/", excluded: false, notes: "" },
+      { id: "199797", title: "PD Chief Performance Evaluation", agency: "Laconia Police Department", status: "Completed", code: "done", score: 4, url: "https://www.muckrock.com/foi/laconia-3913/pd-chief-performance-evaluation-laconia-police-department-199797/", excluded: false, notes: "" },
+      { id: "202349", title: "PD Settlement Agreements", agency: "Laconia Police Department", status: "Rejected", code: "rejected", score: -4, url: "https://www.muckrock.com/foi/laconia-3913/pd-settlement-agreements-202349/", excluded: false, notes: "" },
+      { id: "204514", title: "PD Settlement Agreements", agency: "Laconia Clerk", status: "No Responsive Documents", code: "no_docs", score: 0, url: "https://www.muckrock.com/foi/laconia-3913/pd-settlement-agreements-204514/", excluded: false, notes: "" },
+      { id: "207083", title: "Performance Evaluation", agency: "Laconia Clerk", status: "Completed", code: "done", score: 5, url: "https://www.muckrock.com/foi/laconia-3913/performance-evaluation-laconia-clerk-207083/", excluded: false, notes: "" },
+    ],
   },
   "Lebanon": {
-    score:          0.15,
-    requests:       12,
-    responded:      11,
-    graded:         10,
-    avgReply:       "17 days",
+    counterpart:    "Lebanon School District/SAU88",
+    score:          0.67,
+    requests:       8,
+    responded:      7,
+    graded:         6,
+    avgReply:       "20 days",
     records:        "digital",
-    rejected:       4,
+    rejected:       3,
     missedDeadline: false,
     summary:        "Lebanon shows mixed compliance with the state's right-to-know law.",
+    agencyResponse: null,
+    requestList: [
+      { id: "200193", title: "AI chat logs", agency: "Lebanon City Clerk", status: "Rejected", code: "rejected", score: -4, url: "https://www.muckrock.com/foi/lebanon-3917/ai-chat-logs-city-clerk-200193/", excluded: false, notes: "" },
+      { id: "200154", title: "AI policy", agency: "Lebanon City Clerk", status: "Completed", code: "done", score: 5, url: "https://www.muckrock.com/foi/lebanon-3917/ai-policy-city-clerk-200154/", excluded: false, notes: "" },
+      { id: "201893", title: "Ethics and Conflict of Interest Rules", agency: "Lebanon City Clerk", status: "Completed", code: "done", score: 5, url: "https://www.muckrock.com/foi/lebanon-3917/ethics-and-conflict-of-interest-rules-201893/", excluded: false, notes: "" },
+      { id: "200676", title: "Highest-value RFPs", agency: "Lebanon City Clerk", status: "Completed", code: "done", score: 4, url: "https://www.muckrock.com/foi/lebanon-3917/highest-value-rfps-city-clerk-200676/", excluded: false, notes: "" },
+      { id: "207034", title: "Leadership and constituent emails", agency: "Lebanon City Clerk", status: "Partially Completed", code: "partial", score: null, url: "https://www.muckrock.com/foi/lebanon-3917/leadership-and-constituent-emails-city-clerk-207034/", excluded: false, notes: "" },
+      { id: "199796", title: "PD Chief Performance Evaluation", agency: "Lebanon Police Department", status: "Rejected", code: "rejected", score: -2, url: "https://www.muckrock.com/foi/lebanon-3917/pd-chief-performance-evaluation-lebanon-police-department-199796/", excluded: false, notes: "" },
+      { id: "211336", title: "PD Settlement Agreements", agency: "Lebanon Police Department", status: "Awaiting Acknowledgement", code: "ack", score: null, url: "https://www.muckrock.com/foi/lebanon-3917/pd-settlement-agreements-211336/", excluded: false, notes: "" },
+      { id: "207073", title: "Performance Evaluation", agency: "Lebanon City Clerk", status: "Rejected", code: "rejected", score: -4, url: "https://www.muckrock.com/foi/lebanon-3917/performance-evaluation-city-clerk-207073/", excluded: false, notes: "" },
+    ],
   },
   "Manchester": {
-    score:          0.63,
-    requests:       12,
-    responded:      10,
-    graded:         11,
-    avgReply:       "17 days",
+    counterpart:    "Manchester School District/SAU37",
+    score:          1.29,
+    requests:       8,
+    responded:      7,
+    graded:         7,
+    avgReply:       "21 days",
     records:        "digital",
-    rejected:       1,
+    rejected:       0,
     missedDeadline: true,
     summary:        "Manchester shows mixed compliance with the state's right-to-know law.",
+    agencyResponse: null,
+    requestList: [
+      { id: "200198", title: "AI chat logs", agency: "Manchester City Clerk", status: "No Responsive Documents", code: "no_docs", score: 0, url: "https://www.muckrock.com/foi/manchester-3931/ai-chat-logs-manchester-city-clerk-200198/", excluded: false, notes: "" },
+      { id: "200159", title: "AI policy", agency: "Manchester City Clerk", status: "Completed", code: "done", score: 5, url: "https://www.muckrock.com/foi/manchester-3931/ai-policy-manchester-city-clerk-200159/", excluded: false, notes: "" },
+      { id: "199783", title: "Ethics and Conflict of Interest Rules", agency: "Manchester City Clerk", status: "Completed", code: "done", score: 5, url: "https://www.muckrock.com/foi/manchester-3931/ethics-and-conflict-of-interest-rules-manchester-city-clerk-199783/", excluded: false, notes: "" },
+      { id: "200686", title: "Highest-value RFPs", agency: "Manchester City Clerk", status: "Partially Completed", code: "partial", score: null, url: "https://www.muckrock.com/foi/manchester-3931/highest-value-rfps-manchester-city-clerk-200686/", excluded: false, notes: "" },
+      { id: "207046", title: "Leadership and constituent emails", agency: "Manchester City Clerk", status: "Awaiting Response", code: "processed", score: -3, url: "https://www.muckrock.com/foi/manchester-3931/leadership-and-constituent-emails-manchester-city-clerk-207046/", excluded: false, notes: "" },
+      { id: "199799", title: "PD Chief Performance Evaluation", agency: "Manchester Police Department", status: "No Responsive Documents", code: "no_docs", score: -2, url: "https://www.muckrock.com/foi/manchester-3931/pd-chief-performance-evaluation-manchester-police-department-199799/", excluded: false, notes: "" },
+      { id: "202347", title: "PD Settlement Agreements", agency: "Manchester Police Department", status: "Completed", code: "done", score: 4, url: "https://www.muckrock.com/foi/manchester-3931/pd-settlement-agreements-202347/", excluded: false, notes: "" },
+      { id: "207070", title: "Performance Evaluation", agency: "Manchester City Clerk", status: "No Responsive Documents", code: "no_docs", score: 0, url: "https://www.muckrock.com/foi/manchester-3931/leadership-and-constituent-emails-207070/", excluded: false, notes: "" },
+    ],
   },
   "Nashua": {
-    score:          0.45,
-    requests:       13,
-    responded:      11,
-    graded:         11,
-    avgReply:       "19 days",
+    counterpart:    "Nashua School District/SAU 42",
+    score:          0.71,
+    requests:       9,
+    responded:      7,
+    graded:         7,
+    avgReply:       "27 days",
     records:        "digital",
-    rejected:       1,
+    rejected:       0,
     missedDeadline: true,
     summary:        "Nashua shows mixed compliance with the state's right-to-know law.",
+    agencyResponse: null,
+    requestList: [
+      { id: "200192", title: "AI chat logs", agency: "Nashua City Clerk", status: "Completed", code: "done", score: 4, url: "https://www.muckrock.com/foi/nashua-3944/ai-chat-logs-nashua-city-clerk-200192/", excluded: false, notes: "" },
+      { id: "200153", title: "AI policy", agency: "Nashua City Clerk", status: "No Responsive Documents", code: "no_docs", score: 0, url: "https://www.muckrock.com/foi/nashua-3944/ai-policy-nashua-city-clerk-200153/", excluded: false, notes: "" },
+      { id: "201894", title: "Ethics and Conflict of Interest Rules", agency: "Nashua City Clerk", status: "Completed", code: "done", score: 4, url: "https://www.muckrock.com/foi/nashua-3944/ethics-and-conflict-of-interest-rules-201894/", excluded: false, notes: "" },
+      { id: "200675", title: "Highest-value RFPs", agency: "Nashua City Clerk", status: "Fix Required", code: "fix", score: null, url: "https://www.muckrock.com/foi/nashua-3944/highest-value-rfps-nashua-city-clerk-200675/", excluded: true, notes: "" },
+      { id: "207045", title: "Leadership and constituent emails", agency: "Nashua City Clerk", status: "No Responsive Documents", code: "no_docs", score: 0, url: "https://www.muckrock.com/foi/nashua-3944/leadership-and-constituent-emails-nashua-city-clerk-207045/", excluded: false, notes: "" },
+      { id: "199795", title: "PD Chief Performance Evaluation", agency: "Nashua Police Department", status: "No Responsive Documents", code: "no_docs", score: 0, url: "https://www.muckrock.com/foi/nashua-3944/pd-chief-performance-evaluation-nashua-police-department-199795/", excluded: false, notes: "" },
+      { id: "202350", title: "PD Settlement Agreements", agency: "Nashua Police Department", status: "Awaiting Response", code: "processed", score: -3, url: "https://www.muckrock.com/foi/nashua-3944/pd-settlement-agreements-202350/", excluded: false, notes: "" },
+      { id: "211343", title: "PD Settlement Agreements", agency: "Nashua City Clerk", status: "Processing", code: "submitted", score: null, url: "https://www.muckrock.com/foi/nashua-3944/pd-settlement-agreements-211343/", excluded: false, notes: "" },
+      { id: "207072", title: "Performance Evaluation", agency: "Nashua City Clerk", status: "No Responsive Documents", code: "no_docs", score: 0, url: "https://www.muckrock.com/foi/nashua-3944/leadership-and-constituent-emails-207072/", excluded: false, notes: "" },
+    ],
   },
   "Peterborough": {
-    score:          0.39,
-    requests:       12,
-    responded:      9,
-    graded:         9,
-    avgReply:       "25 days",
+    counterpart:    "Contoocook Valley School District/SAU1",
+    score:          0.4,
+    requests:       8,
+    responded:      7,
+    graded:         5,
+    avgReply:       "33 days",
     records:        "digital",
     rejected:       0,
     missedDeadline: true,
     summary:        "Peterborough shows mixed compliance with the state's right-to-know law.",
+    agencyResponse: null,
+    requestList: [
+      { id: "200211", title: "AI chat logs", agency: "Peterborough Clerk", status: "No Responsive Documents", code: "no_docs", score: 0, url: "https://www.muckrock.com/foi/peterborough-3968/ai-chat-logs-peterborough-clerk-200211/", excluded: false, notes: "" },
+      { id: "200169", title: "AI policy", agency: "Peterborough Clerk", status: "No Responsive Documents", code: "no_docs", score: 0, url: "https://www.muckrock.com/foi/peterborough-3968/ai-policy-peterborough-clerk-200169/", excluded: false, notes: "" },
+      { id: "201895", title: "Ethics and Conflict of Interest Rules", agency: "Peterborough Clerk", status: "Completed", code: "done", score: 5, url: "https://www.muckrock.com/foi/peterborough-3968/ethics-and-conflict-of-interest-rules-201895/", excluded: false, notes: "" },
+      { id: "200674", title: "Highest-value RFPs", agency: "Peterborough Clerk", status: "Partially Completed", code: "partial", score: null, url: "https://www.muckrock.com/foi/peterborough-3968/highest-value-rfps-peterborough-clerk-200674/", excluded: false, notes: "" },
+      { id: "207031", title: "Leadership and constituent emails", agency: "Peterborough Clerk", status: "Partially Completed", code: "partial", score: null, url: "https://www.muckrock.com/foi/peterborough-3968/leadership-and-constituent-emails-peterborough-clerk-207031/", excluded: false, notes: "" },
+      { id: "199792", title: "PD Chief Performance Evaluation", agency: "Peterborough Police Department", status: "Awaiting Response", code: "processed", score: -3, url: "https://www.muckrock.com/foi/peterborough-3968/pd-chief-performance-evaluation-peterborough-police-department-199792/", excluded: false, notes: "" },
+      { id: "202352", title: "PD Settlement Agreements", agency: "Peterborough Police Department", status: "No Responsive Documents", code: "no_docs", score: 0, url: "https://www.muckrock.com/foi/peterborough-3968/pd-settlement-agreements-202352/", excluded: false, notes: "" },
+      { id: "207081", title: "Performance Evaluation", agency: "Peterborough Clerk", status: "Partially Completed", code: "partial", score: null, url: "https://www.muckrock.com/foi/peterborough-3968/performance-evaluation-peterborough-clerk-207081/", excluded: false, notes: "" },
+    ],
   },
   "Portsmouth": {
-    score:          -1.9,
-    requests:       12,
-    responded:      3,
-    graded:         11,
-    avgReply:       "13 days",
+    counterpart:    "Portsmouth School District/SAU52",
+    score:          -1.71,
+    requests:       8,
+    responded:      2,
+    graded:         7,
+    avgReply:       "18 days",
     records:        "digital",
     rejected:       0,
     missedDeadline: true,
     summary:        "Portsmouth is slow to respond and frequently rejects records routinely considered public.",
+    agencyResponse: null,
+    requestList: [
+      { id: "200196", title: "AI chat logs", agency: "Portsmouth Clerk", status: "Awaiting Response", code: "processed", score: null, url: "https://www.muckrock.com/foi/portsmouth-3975/ai-chat-logs-portsmouth-clerk-200196/", excluded: false, notes: "" },
+      { id: "200152", title: "AI policy", agency: "Portsmouth Clerk", status: "Awaiting Acknowledgement", code: "ack", score: -5, url: "https://www.muckrock.com/foi/portsmouth-3975/ai-policy-portsmouth-clerk-200152/", excluded: false, notes: "" },
+      { id: "201887", title: "Ethics and Conflict of Interest Rules", agency: "Portsmouth Clerk", status: "Completed", code: "done", score: 4, url: "https://www.muckrock.com/foi/portsmouth-3975/ethics-and-conflict-of-interest-rules-201887/", excluded: false, notes: "" },
+      { id: "200684", title: "Highest-value RFPs", agency: "Portsmouth Clerk", status: "Completed", code: "done", score: 5, url: "https://www.muckrock.com/foi/portsmouth-3975/highest-value-rfps-portsmouth-clerk-200684/", excluded: false, notes: "" },
+      { id: "207033", title: "Leadership and constituent emails", agency: "Portsmouth Clerk", status: "Awaiting Acknowledgement", code: "ack", score: -5, url: "https://www.muckrock.com/foi/portsmouth-3975/leadership-and-constituent-emails-portsmouth-clerk-207033/", excluded: false, notes: "" },
+      { id: "201884", title: "PD Chief Performance Evaluation", agency: "Portsmouth Police Department", status: "Awaiting Response", code: "processed", score: -3, url: "https://www.muckrock.com/foi/portsmouth-3975/pd-chief-performance-evaluation-201884/", excluded: false, notes: "" },
+      { id: "202339", title: "PD Settlement Agreements", agency: "Portsmouth Police Department", status: "Awaiting Response", code: "processed", score: -3, url: "https://www.muckrock.com/foi/portsmouth-3975/pd-settlement-agreements-202339/", excluded: false, notes: "" },
+      { id: "207089", title: "Performance Evaluation", agency: "Portsmouth Clerk", status: "Awaiting Acknowledgement", code: "ack", score: -5, url: "https://www.muckrock.com/foi/portsmouth-3975/performance-evaluation-portsmouth-clerk-207089/", excluded: false, notes: "" },
+    ],
   },
   "Rochester": {
-    score:          -1.47,
-    requests:       12,
-    responded:      9,
-    graded:         9,
-    avgReply:       "40 days",
+    counterpart:    "Rochester School District/SAU54",
+    score:          -2.0,
+    requests:       8,
+    responded:      6,
+    graded:         5,
+    avgReply:       "50 days",
     records:        "in-person",
     rejected:       3,
-    missedDeadline: true,
+    missedDeadline: false,
     summary:        "Rochester is slow to respond and frequently rejects records routinely considered public.",
+    agencyResponse: null,
+    requestList: [
+      { id: "200191", title: "AI chat logs", agency: "Rochester Clerk", status: "No Responsive Documents", code: "no_docs", score: 0, url: "https://www.muckrock.com/foi/rochester-3980/ai-chat-logs-rochester-clerk-200191/", excluded: false, notes: "" },
+      { id: "200151", title: "AI policy", agency: "Rochester Clerk", status: "Completed", code: "done", score: 2, url: "https://www.muckrock.com/foi/rochester-3980/ai-policy-rochester-clerk-200151/", excluded: false, notes: "" },
+      { id: "211275", title: "Ethics and Conflict of Interest Rules", agency: "Rochester Clerk", status: "Processing", code: "submitted", score: null, url: "https://www.muckrock.com/foi/rochester-3980/ethics-and-conflict-of-interest-rules-rochester-clerk-211275/", excluded: false, notes: "" },
+      { id: "200689", title: "Highest-value RFPs", agency: "Rochester Clerk", status: "Fix Required", code: "fix", score: null, url: "https://www.muckrock.com/foi/rochester-3980/highest-value-rfps-rochester-clerk-200689/", excluded: true, notes: "" },
+      { id: "207032", title: "Leadership and constituent emails", agency: "Rochester Clerk", status: "Awaiting Response", code: "processed", score: null, url: "https://www.muckrock.com/foi/rochester-3980/leadership-and-constituent-emails-rochester-clerk-207032/", excluded: false, notes: "" },
+      { id: "199793", title: "PD Chief Performance Evaluation", agency: "Rochester Police Department", status: "Rejected", code: "rejected", score: -4, url: "https://www.muckrock.com/foi/rochester-3980/pd-chief-performance-evaluation-rochester-police-department-199793/", excluded: false, notes: "" },
+      { id: "202351", title: "PD Settlement Agreements", agency: "Rochester Police Department", status: "Rejected", code: "rejected", score: -4, url: "https://www.muckrock.com/foi/rochester-3980/pd-settlement-agreements-202351/", excluded: false, notes: "" },
+      { id: "207082", title: "Performance Evaluation", agency: "Rochester Clerk", status: "Rejected", code: "rejected", score: -4, url: "https://www.muckrock.com/foi/rochester-3980/performance-evaluation-rochester-clerk-207082/", excluded: false, notes: "" },
+    ],
   },
   "Salem": {
-    score:          -0.68,
-    requests:       12,
-    responded:      8,
-    graded:         11,
-    avgReply:       "18 days",
+    counterpart:    "Salem School District/SAU57",
+    score:          -1.0,
+    requests:       8,
+    responded:      6,
+    graded:         7,
+    avgReply:       "21 days",
     records:        "digital",
     rejected:       3,
     missedDeadline: true,
     summary:        "Salem is slow to respond and frequently rejects records routinely considered public.",
+    agencyResponse: null,
+    requestList: [
+      { id: "200203", title: "AI chat logs", agency: "Salem Clerk", status: "Rejected", code: "rejected", score: -4, url: "https://www.muckrock.com/foi/salem-3985/ai-chat-logs-salem-clerk-200203/", excluded: false, notes: "" },
+      { id: "200172", title: "AI policy", agency: "Salem Clerk", status: "Rejected", code: "rejected", score: -4, url: "https://www.muckrock.com/foi/salem-3985/ai-policy-salem-clerk-200172/", excluded: false, notes: "" },
+      { id: "211331", title: "Ethics and Conflict of Interest Rules", agency: "Salem Clerk", status: "Awaiting Acknowledgement", code: "ack", score: null, url: "https://www.muckrock.com/foi/salem-3985/ethics-and-conflict-of-interest-rules-211331/", excluded: false, notes: "" },
+      { id: "200681", title: "Highest-value RFPs", agency: "Salem Clerk", status: "Rejected", code: "rejected", score: -4, url: "https://www.muckrock.com/foi/salem-3985/highest-value-rfps-salem-clerk-200681/", excluded: false, notes: "" },
+      { id: "207024", title: "Leadership and constituent emails", agency: "Salem Clerk", status: "Completed", code: "done", score: 4, url: "https://www.muckrock.com/foi/salem-3985/leadership-and-constituent-emails-salem-clerk-207024/", excluded: false, notes: "" },
+      { id: "201886", title: "PD Chief Performance Evaluation", agency: "Salem Police Department New Hampshire", status: "Awaiting Response", code: "processed", score: -3, url: "https://www.muckrock.com/foi/salem-3985/pd-chief-performance-evaluation-201886/", excluded: false, notes: "" },
+      { id: "202342", title: "PD Settlement Agreements", agency: "Salem Police Department New Hampshire", status: "No Responsive Documents", code: "no_docs", score: 0, url: "https://www.muckrock.com/foi/salem-3985/pd-settlement-agreements-202342/", excluded: false, notes: "" },
+      { id: "207087", title: "Performance Evaluation", agency: "Salem Clerk", status: "Completed", code: "done", score: 4, url: "https://www.muckrock.com/foi/salem-3985/performance-evaluation-salem-clerk-207087/", excluded: false, notes: "" },
+    ],
   },
   "Somersworth": {
-    score:          -1.0,
-    requests:       12,
-    responded:      9,
-    graded:         8,
-    avgReply:       "49 days",
-    records:        "digital",
+    counterpart:    "Somersworth School District/SAU56",
+    score:          -2.0,
+    requests:       8,
+    responded:      7,
+    graded:         4,
+    avgReply:       "64 days",
+    records:        "none",
     rejected:       2,
-    missedDeadline: true,
+    missedDeadline: false,
     summary:        "Somersworth is slow to respond and frequently rejects records routinely considered public.",
+    agencyResponse: null,
+    requestList: [
+      { id: "200205", title: "AI chat logs", agency: "Somersworth Clerk", status: "No Responsive Documents", code: "no_docs", score: 0, url: "https://www.muckrock.com/foi/somersworth-3993/ai-chat-logs-somersworth-clerk-200205/", excluded: false, notes: "" },
+      { id: "200174", title: "AI policy", agency: "Somersworth Clerk", status: "Fix Required", code: "fix", score: null, url: "https://www.muckrock.com/foi/somersworth-3993/ai-policy-somersworth-clerk-200174/", excluded: true, notes: "" },
+      { id: "201888", title: "Ethics and Conflict of Interest Rules", agency: "Somersworth Clerk", status: "Fix Required", code: "fix", score: null, url: "https://www.muckrock.com/foi/somersworth-3993/ethics-and-conflict-of-interest-rules-201888/", excluded: true, notes: "" },
+      { id: "200683", title: "Highest-value RFPs", agency: "Somersworth Clerk", status: "Partially Completed", code: "partial", score: null, url: "https://www.muckrock.com/foi/somersworth-3993/highest-value-rfps-somersworth-clerk-200683/", excluded: false, notes: "" },
+      { id: "207040", title: "Leadership and constituent emails", agency: "Somersworth Clerk", status: "Awaiting Response", code: "processed", score: null, url: "https://www.muckrock.com/foi/somersworth-3993/leadership-and-constituent-emails-somersworth-clerk-207040/", excluded: false, notes: "" },
+      { id: "199794", title: "PD Chief Performance Evaluation", agency: "Somersworth Police Department", status: "Rejected", code: "rejected", score: -4, url: "https://www.muckrock.com/foi/somersworth-3993/pd-chief-performance-evaluation-somersworth-police-department-199794/", excluded: false, notes: "" },
+      { id: "202340", title: "PD Settlement Agreements", agency: "Somersworth Police Department", status: "Rejected", code: "rejected", score: -4, url: "https://www.muckrock.com/foi/somersworth-3993/pd-settlement-agreements-202340/", excluded: false, notes: "" },
+      { id: "207090", title: "Performance Evaluation", agency: "Somersworth Clerk", status: "No Responsive Documents", code: "no_docs", score: 0, url: "https://www.muckrock.com/foi/somersworth-3993/performance-evaluation-somersworth-clerk-207090/", excluded: false, notes: "" },
+    ],
   },
   "Troy": {
-    score:          1.38,
-    requests:       12,
-    responded:      7,
-    graded:         8,
+    counterpart:    "Monadnock Regional School District/SAU93",
+    score:          -2.25,
+    requests:       8,
+    responded:      3,
+    graded:         4,
+    avgReply:       "37 days",
+    records:        "none",
+    rejected:       1,
+    missedDeadline: true,
+    summary:        "Troy is slow to respond and frequently rejects records routinely considered public.",
+    agencyResponse: null,
+    requestList: [
+      { id: "200202", title: "AI chat logs", agency: "Troy Clerk", status: "No Responsive Documents", code: "no_docs", score: 0, url: "https://www.muckrock.com/foi/troy-4012/ai-chat-logs-troy-clerk-200202/", excluded: false, notes: "" },
+      { id: "200171", title: "AI policy", agency: "Troy Clerk", status: "Rejected", code: "rejected", score: -4, url: "https://www.muckrock.com/foi/troy-4012/ai-policy-troy-clerk-200171/", excluded: false, notes: "" },
+      { id: "201890", title: "Ethics and Conflict of Interest Rules", agency: "Troy Clerk", status: "No Responsive Documents", code: "no_docs", score: 0, url: "https://www.muckrock.com/foi/troy-4012/ethics-and-conflict-of-interest-rules-201890/", excluded: false, notes: "" },
+      { id: "200680", title: "Highest-value RFPs", agency: "Troy Clerk", status: "Awaiting Acknowledgement", code: "ack", score: -5, url: "https://www.muckrock.com/foi/troy-4012/highest-value-rfps-troy-clerk-200680/", excluded: false, notes: "" },
+      { id: "211354", title: "Leadership and constituent emails", agency: "Troy Clerk", status: "Awaiting Acknowledgement", code: "ack", score: null, url: "https://www.muckrock.com/foi/troy-4012/leadership-and-constituent-emails-211354/", excluded: false, notes: "" },
+      { id: "211357", title: "PD Chief Performance Evaluation", agency: "Troy Police Department", status: "Awaiting Acknowledgement", code: "ack", score: null, url: "https://www.muckrock.com/foi/troy-4012/pd-chief-performance-evaluation-211357/", excluded: false, notes: "" },
+      { id: "211356", title: "PD Settlement Agreements", agency: "Troy Police Department", status: "Awaiting Acknowledgement", code: "ack", score: null, url: "https://www.muckrock.com/foi/troy-4012/pd-settlement-agreements-211356/", excluded: false, notes: "" },
+      { id: "211355", title: "Performance Evaluation", agency: "Troy Clerk", status: "Processing", code: "submitted", score: null, url: "https://www.muckrock.com/foi/troy-4012/performance-evaluation-211355/", excluded: false, notes: "" },
+    ],
+  },
+};
+
+const DISTRICT_OVERRIDES = {
+  "Berlin School District/SAU 3": {
+    counterpart:    "Berlin",
+    score:          0.67,
+    requests:       4,
+    responded:      3,
+    graded:         3,
+    avgReply:       "16 days",
+    records:        "digital",
+    rejected:       0,
+    missedDeadline: true,
+    summary:        "Berlin School District/SAU 3 shows mixed compliance with the state's right-to-know law.",
+    agencyResponse: null,
+    requestList: [
+      { id: "207062", title: "Leadership and constituent emails", agency: "Berlin School District/SAU 3", status: "Awaiting Response", code: "processed", score: -3, url: "https://www.muckrock.com/foi/new-hampshire-81/leadership-and-constituent-emails-berlin-school-districtsau-3-207062/", excluded: false, notes: "" },
+      { id: "204311", title: "Parental Bill of Rights", agency: "Berlin School District/SAU 3", status: "Completed", code: "done", score: 5, url: "https://www.muckrock.com/foi/new-hampshire-81/parental-bill-of-rights-berlin-school-districtsau-3-204311/", excluded: false, notes: "" },
+      { id: "204187", title: "Parental Objections", agency: "Berlin School District/SAU 3", status: "No Responsive Documents", code: "no_docs", score: 0, url: "https://www.muckrock.com/foi/new-hampshire-81/parental-objections-berlin-school-districtsau-3-204187/", excluded: false, notes: "" },
+      { id: "207107", title: "Performance Evaluation", agency: "Berlin School District/SAU 3", status: "Partially Completed", code: "partial", score: null, url: "https://www.muckrock.com/foi/new-hampshire-81/performance-evaluation-berlin-school-districtsau-3-207107/", excluded: false, notes: "" },
+    ],
+  },
+  "Bow School District/SAU67": {
+    counterpart:    "Bow",
+    score:          0.5,
+    requests:       4,
+    responded:      2,
+    graded:         4,
+    avgReply:       "3 days",
+    records:        "digital",
+    rejected:       0,
+    missedDeadline: true,
+    summary:        "Bow School District/SAU67 shows mixed compliance with the state's right-to-know law.",
+    agencyResponse: null,
+    requestList: [
+      { id: "207050", title: "Leadership and constituent emails", agency: "Bow School District/SAU67", status: "Awaiting Response", code: "processed", score: -3, url: "https://www.muckrock.com/foi/new-hampshire-81/leadership-and-constituent-emails-sau67-207050/", excluded: false, notes: "" },
+      { id: "204294", title: "Parental Bill of Rights", agency: "Bow School District/SAU67", status: "Completed", code: "done", score: 5, url: "https://www.muckrock.com/foi/new-hampshire-81/parental-bill-of-rights-sau67-204294/", excluded: false, notes: "" },
+      { id: "204175", title: "Parental Objections", agency: "Bow School District/SAU67", status: "Completed", code: "done", score: 5, url: "https://www.muckrock.com/foi/new-hampshire-81/parental-objections-sau67-204175/", excluded: false, notes: "" },
+      { id: "207095", title: "Performance Evaluation", agency: "Bow School District/SAU67", status: "Awaiting Acknowledgement", code: "ack", score: -5, url: "https://www.muckrock.com/foi/new-hampshire-81/performance-evaluation-sau67-207095/", excluded: false, notes: "" },
+    ],
+  },
+  "Claremont School District/SAU6": {
+    counterpart:    "Claremont",
+    score:          0.5,
+    requests:       4,
+    responded:      3,
+    graded:         4,
+    avgReply:       "3 days",
+    records:        "digital",
+    rejected:       0,
+    missedDeadline: true,
+    summary:        "Claremont School District/SAU6 shows mixed compliance with the state's right-to-know law.",
+    agencyResponse: null,
+    requestList: [
+      { id: "207061", title: "Leadership and constituent emails", agency: "Claremont School District/SAU6", status: "Awaiting Response", code: "processed", score: -3, url: "https://www.muckrock.com/foi/new-hampshire-81/leadership-and-constituent-emails-sau6-serving-the-communities-of-claremont-and-unity-207061/", excluded: false, notes: "" },
+      { id: "204310", title: "Parental Bill of Rights", agency: "Claremont School District/SAU6", status: "Completed", code: "done", score: 5, url: "https://www.muckrock.com/foi/new-hampshire-81/parental-bill-of-rights-sau6-serving-the-communities-of-claremont-and-unity-204310/", excluded: false, notes: "" },
+      { id: "204186", title: "Parental Objections", agency: "Claremont School District/SAU6", status: "No Responsive Documents", code: "no_docs", score: 0, url: "https://www.muckrock.com/foi/new-hampshire-81/parental-objections-sau6-serving-the-communities-of-claremont-and-unity-204186/", excluded: false, notes: "" },
+      { id: "207106", title: "Performance Evaluation", agency: "Claremont School District/SAU6", status: "No Responsive Documents", code: "no_docs", score: 0, url: "https://www.muckrock.com/foi/new-hampshire-81/performance-evaluation-sau6-serving-the-communities-of-claremont-and-unity-207106/", excluded: false, notes: "" },
+    ],
+  },
+  "Concord School District/SAU8": {
+    counterpart:    "Concord",
+    score:          1.25,
+    requests:       4,
+    responded:      4,
+    graded:         4,
     avgReply:       "17 days",
     records:        "digital",
     rejected:       1,
+    missedDeadline: false,
+    summary:        "Concord School District/SAU8 shows mixed compliance with the state's right-to-know law.",
+    agencyResponse: null,
+    requestList: [
+      { id: "207060", title: "Leadership and constituent emails", agency: "Concord School District/SAU8", status: "Completed", code: "done", score: 4, url: "https://www.muckrock.com/foi/new-hampshire-81/leadership-and-constituent-emails-concord-school-districtsau8-207060/", excluded: false, notes: "" },
+      { id: "204309", title: "Parental Bill of Rights", agency: "Concord School District/SAU8", status: "Completed", code: "done", score: 5, url: "https://www.muckrock.com/foi/new-hampshire-81/parental-bill-of-rights-concord-school-districtsau8-204309/", excluded: false, notes: "" },
+      { id: "204185", title: "Parental Objections", agency: "Concord School District/SAU8", status: "No Responsive Documents", code: "no_docs", score: 0, url: "https://www.muckrock.com/foi/new-hampshire-81/parental-objections-concord-school-districtsau8-204185/", excluded: false, notes: "" },
+      { id: "207105", title: "Performance Evaluation", agency: "Concord School District/SAU8", status: "Rejected", code: "rejected", score: -4, url: "https://www.muckrock.com/foi/new-hampshire-81/performance-evaluation-concord-school-districtsau8-207105/", excluded: false, notes: "" },
+    ],
+  },
+  "Contoocook Valley School District/SAU1": {
+    counterpart:    "Peterborough",
+    score:          1.0,
+    requests:       4,
+    responded:      2,
+    graded:         4,
+    avgReply:       "3 days",
+    records:        "digital",
+    rejected:       0,
     missedDeadline: true,
-    summary:        "Troy shows mixed compliance with the state's right-to-know law.",
+    summary:        "Contoocook Valley School District/SAU1 shows mixed compliance with the state's right-to-know law.",
+    agencyResponse: null,
+    requestList: [
+      { id: "207053", title: "Leadership and constituent emails", agency: "Contoocook Valley School District/SAU1", status: "Awaiting Response", code: "processed", score: -3, url: "https://www.muckrock.com/foi/new-hampshire-81/leadership-and-constituent-emails-contoocook-valley-school-districtsau1-207053/", excluded: false, notes: "" },
+      { id: "204298", title: "Parental Bill of Rights", agency: "Contoocook Valley School District/SAU1", status: "Completed", code: "done", score: 5, url: "https://www.muckrock.com/foi/new-hampshire-81/parental-bill-of-rights-contoocook-valley-school-districtsau1-204298/", excluded: false, notes: "" },
+      { id: "204178", title: "Parental Objections", agency: "Contoocook Valley School District/SAU1", status: "Completed", code: "done", score: 5, url: "https://www.muckrock.com/foi/new-hampshire-81/parental-objections-contoocook-valley-school-districtsau1-204178/", excluded: false, notes: "" },
+      { id: "207098", title: "Performance Evaluation", agency: "Contoocook Valley School District/SAU1", status: "Awaiting Response", code: "processed", score: -3, url: "https://www.muckrock.com/foi/new-hampshire-81/performance-evaluation-contoocook-valley-school-districtsau1-207098/", excluded: false, notes: "" },
+    ],
+  },
+  "Derry Cooperative School District/SAU10": {
+    counterpart:    "Derry",
+    score:          0.5,
+    requests:       4,
+    responded:      3,
+    graded:         4,
+    avgReply:       "5 days",
+    records:        "digital",
+    rejected:       0,
+    missedDeadline: true,
+    summary:        "Derry Cooperative School District/SAU10 shows mixed compliance with the state's right-to-know law.",
+    agencyResponse: null,
+    requestList: [
+      { id: "207064", title: "Leadership and constituent emails", agency: "Derry Cooperative School District/SAU10", status: "Awaiting Response", code: "processed", score: -3, url: "https://www.muckrock.com/foi/derry-3853/leadership-and-constituent-emails-derry-cooperative-school-district-207064/", excluded: false, notes: "" },
+      { id: "204292", title: "Parental Bill of Rights", agency: "Derry Cooperative School District/SAU10", status: "Completed", code: "done", score: 5, url: "https://www.muckrock.com/foi/derry-3853/parental-bill-of-rights-derry-cooperative-school-district-204292/", excluded: false, notes: "" },
+      { id: "204166", title: "Parental Objections", agency: "Derry Cooperative School District/SAU10", status: "No Responsive Documents", code: "no_docs", score: 0, url: "https://www.muckrock.com/foi/derry-3853/parental-objections-derry-cooperative-school-district-204166/", excluded: false, notes: "" },
+      { id: "207109", title: "Performance Evaluation", agency: "Derry Cooperative School District/SAU10", status: "No Responsive Documents", code: "no_docs", score: 0, url: "https://www.muckrock.com/foi/derry-3853/performance-evaluation-derry-cooperative-school-district-207109/", excluded: false, notes: "" },
+    ],
+  },
+  "Dover School District/SAU11": {
+    counterpart:    "Dover",
+    score:          -1.67,
+    requests:       4,
+    responded:      1,
+    graded:         3,
+    avgReply:       "2 days",
+    records:        "digital",
+    rejected:       0,
+    missedDeadline: true,
+    summary:        "Dover School District/SAU11 is slow to respond and frequently rejects records routinely considered public.",
+    agencyResponse: null,
+    requestList: [
+      { id: "207069", title: "Leadership and constituent emails", agency: "Dover School District/SAU11", status: "Awaiting Response", code: "processed", score: null, url: "https://www.muckrock.com/foi/dover-3855/leadership-and-constituent-emails-dover-school-districtsau11-207069/", excluded: false, notes: "" },
+      { id: "204308", title: "Parental Bill of Rights", agency: "Dover School District/SAU11", status: "Completed", code: "done", score: 5, url: "https://www.muckrock.com/foi/dover-3855/parental-bill-of-rights-dover-school-districtsau11-204308/", excluded: false, notes: "" },
+      { id: "204171", title: "Parental Objections", agency: "Dover School District/SAU11", status: "Awaiting Acknowledgement", code: "ack", score: -5, url: "https://www.muckrock.com/foi/dover-3855/parental-objections-dover-school-districtsau11-204171/", excluded: false, notes: "" },
+      { id: "207114", title: "Performance Evaluation", agency: "Dover School District/SAU11", status: "Awaiting Acknowledgement", code: "ack", score: -5, url: "https://www.muckrock.com/foi/dover-3855/performance-evaluation-dover-school-districtsau11-207114/", excluded: false, notes: "" },
+    ],
+  },
+  "Franklin School District/SAU18": {
+    counterpart:    "Franklin",
+    score:          3.5,
+    requests:       4,
+    responded:      4,
+    graded:         4,
+    avgReply:       "8 days",
+    records:        "digital",
+    rejected:       0,
+    missedDeadline: false,
+    summary:        "Franklin School District/SAU18 responded to most requests quickly and in full.",
+    agencyResponse: null,
+    requestList: [
+      { id: "207059", title: "Leadership and constituent emails", agency: "Franklin School District/SAU18", status: "Completed", code: "done", score: 4, url: "https://www.muckrock.com/foi/new-hampshire-81/leadership-and-constituent-emails-franklin-school-districtsau18-207059/", excluded: false, notes: "" },
+      { id: "204307", title: "Parental Bill of Rights", agency: "Franklin School District/SAU18", status: "Completed", code: "done", score: 5, url: "https://www.muckrock.com/foi/new-hampshire-81/parental-bill-of-rights-franklin-school-districtsau18-204307/", excluded: false, notes: "" },
+      { id: "204184", title: "Parental Objections", agency: "Franklin School District/SAU18", status: "No Responsive Documents", code: "no_docs", score: 0, url: "https://www.muckrock.com/foi/new-hampshire-81/parental-objections-franklin-school-districtsau18-204184/", excluded: false, notes: "" },
+      { id: "207104", title: "Performance Evaluation", agency: "Franklin School District/SAU18", status: "Completed", code: "done", score: 5, url: "https://www.muckrock.com/foi/new-hampshire-81/performance-evaluation-franklin-school-districtsau18-207104/", excluded: false, notes: "" },
+    ],
+  },
+  "Gorham School District/SAU20": {
+    counterpart:    "Gorham",
+    score:          -5.0,
+    requests:       4,
+    responded:      0,
+    graded:         4,
+    avgReply:       "—",
+    records:        "none",
+    rejected:       0,
+    missedDeadline: true,
+    summary:        "Gorham School District/SAU20 is largely unresponsive to public records requests filed under the state's right-to-know law.",
+    agencyResponse: null,
+    requestList: [
+      { id: "207051", title: "Leadership and constituent emails", agency: "Gorham School District/SAU20", status: "Awaiting Acknowledgement", code: "ack", score: -5, url: "https://www.muckrock.com/foi/new-hampshire-81/leadership-and-constituent-emails-sau20-207051/", excluded: false, notes: "" },
+      { id: "204295", title: "Parental Bill of Rights", agency: "Gorham School District/SAU20", status: "Awaiting Acknowledgement", code: "ack", score: -5, url: "https://www.muckrock.com/foi/new-hampshire-81/parental-bill-of-rights-sau20-204295/", excluded: false, notes: "" },
+      { id: "204176", title: "Parental Objections", agency: "Gorham School District/SAU20", status: "Awaiting Acknowledgement", code: "ack", score: -5, url: "https://www.muckrock.com/foi/new-hampshire-81/parental-objections-sau20-204176/", excluded: false, notes: "" },
+      { id: "207096", title: "Performance Evaluation", agency: "Gorham School District/SAU20", status: "Awaiting Acknowledgement", code: "ack", score: -5, url: "https://www.muckrock.com/foi/new-hampshire-81/performance-evaluation-sau20-207096/", excluded: false, notes: "" },
+    ],
+  },
+  "Hopkinton School District/SAU66": {
+    counterpart:    "Hopkinton",
+    score:          2.5,
+    requests:       4,
+    responded:      4,
+    graded:         4,
+    avgReply:       "3 days",
+    records:        "digital",
+    rejected:       0,
+    missedDeadline: false,
+    summary:        "Hopkinton School District/SAU66 was broadly cooperative on public records requests.",
+    agencyResponse: null,
+    requestList: [
+      { id: "207049", title: "Leadership and constituent emails", agency: "Hopkinton School District/SAU66", status: "Completed", code: "done", score: 5, url: "https://www.muckrock.com/foi/new-hampshire-81/leadership-and-constituent-emails-hopkinton-school-district-207049/", excluded: false, notes: "" },
+      { id: "204293", title: "Parental Bill of Rights", agency: "Hopkinton School District/SAU66", status: "Completed", code: "done", score: 5, url: "https://www.muckrock.com/foi/new-hampshire-81/parental-bill-of-rights-hopkinton-school-district-204293/", excluded: false, notes: "" },
+      { id: "204174", title: "Parental Objections", agency: "Hopkinton School District/SAU66", status: "No Responsive Documents", code: "no_docs", score: 0, url: "https://www.muckrock.com/foi/new-hampshire-81/parental-objections-hopkinton-school-district-204174/", excluded: false, notes: "" },
+      { id: "207094", title: "Performance Evaluation", agency: "Hopkinton School District/SAU66", status: "No Responsive Documents", code: "no_docs", score: 0, url: "https://www.muckrock.com/foi/new-hampshire-81/performance-evaluation-hopkinton-school-district-207094/", excluded: false, notes: "" },
+    ],
+  },
+  "Interstate School District/SAU70": {
+    counterpart:    "Hanover",
+    score:          3.5,
+    requests:       4,
+    responded:      4,
+    graded:         4,
+    avgReply:       "9 days",
+    records:        "digital",
+    rejected:       0,
+    missedDeadline: false,
+    summary:        "Interstate School District/SAU70 responded to most requests quickly and in full.",
+    agencyResponse: null,
+    requestList: [
+      { id: "207052", title: "Leadership and constituent emails", agency: "Interstate School District/SAU70", status: "Completed", code: "done", score: 4, url: "https://www.muckrock.com/foi/new-hampshire-81/leadership-and-constituent-emails-sau70-207052/", excluded: false, notes: "" },
+      { id: "204296", title: "Parental Bill of Rights", agency: "Interstate School District/SAU70", status: "Completed", code: "done", score: 5, url: "https://www.muckrock.com/foi/new-hampshire-81/parental-bill-of-rights-sau70-204296/", excluded: false, notes: "" },
+      { id: "204177", title: "Parental Objections", agency: "Interstate School District/SAU70", status: "Completed", code: "done", score: 5, url: "https://www.muckrock.com/foi/new-hampshire-81/parental-objections-sau70-204177/", excluded: false, notes: "" },
+      { id: "207097", title: "Performance Evaluation", agency: "Interstate School District/SAU70", status: "No Responsive Documents", code: "no_docs", score: 0, url: "https://www.muckrock.com/foi/new-hampshire-81/performance-evaluation-sau70-207097/", excluded: false, notes: "" },
+    ],
+  },
+  "Keene School District/SAU29": {
+    counterpart:    "Keene",
+    score:          -2.5,
+    requests:       4,
+    responded:      1,
+    graded:         4,
+    avgReply:       "9 days",
+    records:        "digital",
+    rejected:       0,
+    missedDeadline: true,
+    summary:        "Keene School District/SAU29 is slow to respond and frequently rejects records routinely considered public.",
+    agencyResponse: null,
+    requestList: [
+      { id: "207057", title: "Leadership and constituent emails", agency: "Keene School District/SAU29", status: "Awaiting Acknowledgement", code: "ack", score: -5, url: "https://www.muckrock.com/foi/new-hampshire-81/leadership-and-constituent-emails-keene-school-districtsau29-207057/", excluded: false, notes: "" },
+      { id: "204305", title: "Parental Bill of Rights", agency: "Keene School District/SAU29", status: "Completed", code: "done", score: 5, url: "https://www.muckrock.com/foi/new-hampshire-81/parental-bill-of-rights-keene-school-districtsau29-204305/", excluded: false, notes: "" },
+      { id: "204182", title: "Parental Objections", agency: "Keene School District/SAU29", status: "Awaiting Acknowledgement", code: "ack", score: -5, url: "https://www.muckrock.com/foi/new-hampshire-81/parental-objections-keene-school-districtsau29-204182/", excluded: false, notes: "" },
+      { id: "207102", title: "Performance Evaluation", agency: "Keene School District/SAU29", status: "Awaiting Acknowledgement", code: "ack", score: -5, url: "https://www.muckrock.com/foi/new-hampshire-81/performance-evaluation-keene-school-districtsau29-207102/", excluded: false, notes: "" },
+    ],
+  },
+  "Laconia School District/SAU30": {
+    counterpart:    "Laconia",
+    score:          3.25,
+    requests:       4,
+    responded:      4,
+    graded:         4,
+    avgReply:       "16 days",
+    records:        "digital",
+    rejected:       0,
+    missedDeadline: false,
+    summary:        "Laconia School District/SAU30 was broadly cooperative on public records requests.",
+    agencyResponse: null,
+    requestList: [
+      { id: "207056", title: "Leadership and constituent emails", agency: "Laconia School District/SAU30", status: "Completed", code: "done", score: 4, url: "https://www.muckrock.com/foi/new-hampshire-81/leadership-and-constituent-emails-laconia-school-districtsau30-207056/", excluded: false, notes: "" },
+      { id: "204304", title: "Parental Bill of Rights", agency: "Laconia School District/SAU30", status: "Completed", code: "done", score: 5, url: "https://www.muckrock.com/foi/new-hampshire-81/parental-bill-of-rights-laconia-school-districtsau30-204304/", excluded: false, notes: "" },
+      { id: "204181", title: "Parental Objections", agency: "Laconia School District/SAU30", status: "Completed", code: "done", score: 4, url: "https://www.muckrock.com/foi/new-hampshire-81/parental-objections-laconia-school-districtsau30-204181/", excluded: false, notes: "" },
+      { id: "207101", title: "Performance Evaluation", agency: "Laconia School District/SAU30", status: "No Responsive Documents", code: "no_docs", score: 0, url: "https://www.muckrock.com/foi/new-hampshire-81/performance-evaluation-laconia-school-districtsau30-207101/", excluded: false, notes: "" },
+    ],
+  },
+  "Lebanon School District/SAU88": {
+    counterpart:    "Lebanon",
+    score:          1.25,
+    requests:       4,
+    responded:      4,
+    graded:         4,
+    avgReply:       "13 days",
+    records:        "digital",
+    rejected:       1,
+    missedDeadline: false,
+    summary:        "Lebanon School District/SAU88 shows mixed compliance with the state's right-to-know law.",
+    agencyResponse: null,
+    requestList: [
+      { id: "207068", title: "Leadership and constituent emails", agency: "Lebanon School District/SAU88", status: "Completed", code: "done", score: 4, url: "https://www.muckrock.com/foi/lebanon-3917/leadership-and-constituent-emails-lebanon-school-districtsau88-207068/", excluded: false, notes: "" },
+      { id: "204303", title: "Parental Bill of Rights", agency: "Lebanon School District/SAU88", status: "Completed", code: "done", score: 5, url: "https://www.muckrock.com/foi/lebanon-3917/parental-bill-of-rights-lebanon-school-districtsau88-204303/", excluded: false, notes: "" },
+      { id: "204170", title: "Parental Objections", agency: "Lebanon School District/SAU88", status: "No Responsive Documents", code: "no_docs", score: 0, url: "https://www.muckrock.com/foi/lebanon-3917/parental-objections-lebanon-school-districtsau88-204170/", excluded: false, notes: "" },
+      { id: "207113", title: "Performance Evaluation", agency: "Lebanon School District/SAU88", status: "Rejected", code: "rejected", score: -4, url: "https://www.muckrock.com/foi/lebanon-3917/performance-evaluation-lebanon-school-districtsau88-207113/", excluded: false, notes: "" },
+    ],
+  },
+  "Manchester School District/SAU37": {
+    counterpart:    "Manchester",
+    score:          -0.5,
+    requests:       4,
+    responded:      3,
+    graded:         4,
+    avgReply:       "8 days",
+    records:        "digital",
+    rejected:       1,
+    missedDeadline: true,
+    summary:        "Manchester School District/SAU37 shows mixed compliance with the state's right-to-know law.",
+    agencyResponse: null,
+    requestList: [
+      { id: "207058", title: "Leadership and constituent emails", agency: "Manchester School District/SAU37", status: "Awaiting Response", code: "processed", score: -3, url: "https://www.muckrock.com/foi/new-hampshire-81/leadership-and-constituent-emails-manchester-school-district-207058/", excluded: false, notes: "" },
+      { id: "204306", title: "Parental Bill of Rights", agency: "Manchester School District/SAU37", status: "Completed", code: "done", score: 5, url: "https://www.muckrock.com/foi/manchester-3931/parental-bill-of-rights-manchester-school-district-204306/", excluded: false, notes: "" },
+      { id: "204183", title: "Parental Objections", agency: "Manchester School District/SAU37", status: "No Responsive Documents", code: "no_docs", score: 0, url: "https://www.muckrock.com/foi/new-hampshire-81/parental-objections-manchester-school-district-204183/", excluded: false, notes: "" },
+      { id: "207103", title: "Performance Evaluation", agency: "Manchester School District/SAU37", status: "Rejected", code: "rejected", score: -4, url: "https://www.muckrock.com/foi/new-hampshire-81/performance-evaluation-manchester-school-district-207103/", excluded: false, notes: "" },
+    ],
+  },
+  "Monadnock Regional School District/SAU93": {
+    counterpart:    "Troy",
+    score:          5.0,
+    requests:       4,
+    responded:      4,
+    graded:         4,
+    avgReply:       "2 days",
+    records:        "digital",
+    rejected:       0,
+    missedDeadline: false,
+    summary:        "Monadnock Regional School District/SAU93 responded to most requests quickly and in full.",
+    agencyResponse: null,
+    requestList: [
+      { id: "207048", title: "Leadership and constituent emails", agency: "Monadnock Regional School District/SAU93", status: "Completed", code: "done", score: 5, url: "https://www.muckrock.com/foi/new-hampshire-81/leadership-and-constituent-emails-monadnock-regional-school-district-207048/", excluded: false, notes: "" },
+      { id: "204290", title: "Parental Bill of Rights", agency: "Monadnock Regional School District/SAU93", status: "Completed", code: "done", score: 5, url: "https://www.muckrock.com/foi/new-hampshire-81/parental-bill-of-rights-monadnock-regional-school-district-204290/", excluded: false, notes: "" },
+      { id: "204173", title: "Parental Objections", agency: "Monadnock Regional School District/SAU93", status: "Completed", code: "done", score: 5, url: "https://www.muckrock.com/foi/new-hampshire-81/parental-objections-monadnock-regional-school-district-204173/", excluded: false, notes: "" },
+      { id: "207093", title: "Performance Evaluation", agency: "Monadnock Regional School District/SAU93", status: "Completed", code: "done", score: 5, url: "https://www.muckrock.com/foi/new-hampshire-81/performance-evaluation-monadnock-regional-school-district-207093/", excluded: false, notes: "" },
+    ],
+  },
+  "Nashua School District/SAU 42": {
+    counterpart:    "Nashua",
+    score:          1.25,
+    requests:       4,
+    responded:      4,
+    graded:         4,
+    avgReply:       "8 days",
+    records:        "digital",
+    rejected:       1,
+    missedDeadline: false,
+    summary:        "Nashua School District/SAU 42 shows mixed compliance with the state's right-to-know law.",
+    agencyResponse: null,
+    requestList: [
+      { id: "207055", title: "Leadership and constituent emails", agency: "Nashua School District/SAU 42", status: "No Responsive Documents", code: "no_docs", score: 0, url: "https://www.muckrock.com/foi/new-hampshire-81/leadership-and-constituent-emails-nashua-school-district-207055/", excluded: false, notes: "" },
+      { id: "204302", title: "Parental Bill of Rights", agency: "Nashua School District/SAU 42", status: "Completed", code: "done", score: 5, url: "https://www.muckrock.com/foi/nashua-3944/parental-bill-of-rights-nashua-school-district-204302/", excluded: false, notes: "" },
+      { id: "204180", title: "Parental Objections", agency: "Nashua School District/SAU 42", status: "Completed", code: "done", score: 4, url: "https://www.muckrock.com/foi/new-hampshire-81/parental-objections-nashua-school-district-204180/", excluded: false, notes: "" },
+      { id: "207100", title: "Performance Evaluation", agency: "Nashua School District/SAU 42", status: "Rejected", code: "rejected", score: -4, url: "https://www.muckrock.com/foi/new-hampshire-81/performance-evaluation-nashua-school-district-207100/", excluded: false, notes: "" },
+    ],
+  },
+  "Oyster River Cooperative School District/SAU5": {
+    counterpart:    "Durham",
+    score:          2.0,
+    requests:       4,
+    responded:      4,
+    graded:         4,
+    avgReply:       "9 days",
+    records:        "digital",
+    rejected:       0,
+    missedDeadline: false,
+    summary:        "Oyster River Cooperative School District/SAU5 was broadly cooperative on public records requests.",
+    agencyResponse: null,
+    requestList: [
+      { id: "207047", title: "Leadership and constituent emails", agency: "Oyster River Cooperative School District/SAU5", status: "Completed", code: "done", score: 4, url: "https://www.muckrock.com/foi/new-hampshire-81/leadership-and-constituent-emails-oyster-river-cooperative-school-district-207047/", excluded: false, notes: "" },
+      { id: "204289", title: "Parental Bill of Rights", agency: "Oyster River Cooperative School District/SAU5", status: "No Responsive Documents", code: "no_docs", score: 0, url: "https://www.muckrock.com/foi/new-hampshire-81/parental-bill-of-rights-oyster-river-cooperative-school-district-204289/", excluded: false, notes: "" },
+      { id: "204172", title: "Parental Objections", agency: "Oyster River Cooperative School District/SAU5", status: "No Responsive Documents", code: "no_docs", score: 0, url: "https://www.muckrock.com/foi/new-hampshire-81/parental-objections-oyster-river-cooperative-school-district-204172/", excluded: false, notes: "" },
+      { id: "207092", title: "Performance Evaluation", agency: "Oyster River Cooperative School District/SAU5", status: "Completed", code: "done", score: 4, url: "https://www.muckrock.com/foi/new-hampshire-81/performance-evaluation-oyster-river-cooperative-school-district-207092/", excluded: false, notes: "" },
+    ],
+  },
+  "Portsmouth School District/SAU52": {
+    counterpart:    "Portsmouth",
+    score:          -1.5,
+    requests:       4,
+    responded:      1,
+    graded:         4,
+    avgReply:       "3 days",
+    records:        "digital",
+    rejected:       0,
+    missedDeadline: true,
+    summary:        "Portsmouth School District/SAU52 is slow to respond and frequently rejects records routinely considered public.",
+    agencyResponse: null,
+    requestList: [
+      { id: "207054", title: "Leadership and constituent emails", agency: "Portsmouth School District/SAU52", status: "Awaiting Response", code: "processed", score: -3, url: "https://www.muckrock.com/foi/new-hampshire-81/leadership-and-constituent-emails-portsmouth-school-district-207054/", excluded: false, notes: "" },
+      { id: "204301", title: "Parental Bill of Rights", agency: "Portsmouth School District/SAU52", status: "Completed", code: "done", score: 5, url: "https://www.muckrock.com/foi/new-hampshire-81/parental-bill-of-rights-portsmouth-school-district-204301/", excluded: false, notes: "" },
+      { id: "204179", title: "Parental Objections", agency: "Portsmouth School District/SAU52", status: "Awaiting Response", code: "processed", score: -3, url: "https://www.muckrock.com/foi/new-hampshire-81/parental-objections-portsmouth-school-district-204179/", excluded: false, notes: "" },
+      { id: "207099", title: "Performance Evaluation", agency: "Portsmouth School District/SAU52", status: "Awaiting Acknowledgement", code: "ack", score: -5, url: "https://www.muckrock.com/foi/new-hampshire-81/performance-evaluation-portsmouth-school-district-207099/", excluded: false, notes: "" },
+    ],
+  },
+  "Rochester School District/SAU54": {
+    counterpart:    "Rochester",
+    score:          0.5,
+    requests:       4,
+    responded:      3,
+    graded:         4,
+    avgReply:       "23 days",
+    records:        "digital",
+    rejected:       0,
+    missedDeadline: true,
+    summary:        "Rochester School District/SAU54 shows mixed compliance with the state's right-to-know law.",
+    agencyResponse: null,
+    requestList: [
+      { id: "207067", title: "Leadership and constituent emails", agency: "Rochester School District/SAU54", status: "Awaiting Response", code: "processed", score: -3, url: "https://www.muckrock.com/foi/rochester-3980/leadership-and-constituent-emails-rochester-school-district-207067/", excluded: false, notes: "" },
+      { id: "204300", title: "Parental Bill of Rights", agency: "Rochester School District/SAU54", status: "Completed", code: "done", score: 5, url: "https://www.muckrock.com/foi/rochester-3980/parental-bill-of-rights-rochester-school-district-204300/", excluded: false, notes: "" },
+      { id: "204169", title: "Parental Objections", agency: "Rochester School District/SAU54", status: "No Responsive Documents", code: "no_docs", score: 0, url: "https://www.muckrock.com/foi/rochester-3980/parental-objections-rochester-school-district-204169/", excluded: false, notes: "" },
+      { id: "207112", title: "Performance Evaluation", agency: "Rochester School District/SAU54", status: "No Responsive Documents", code: "no_docs", score: 0, url: "https://www.muckrock.com/foi/rochester-3980/performance-evaluation-rochester-school-district-207112/", excluded: false, notes: "" },
+    ],
+  },
+  "Salem School District/SAU57": {
+    counterpart:    "Salem",
+    score:          0.25,
+    requests:       4,
+    responded:      2,
+    graded:         4,
+    avgReply:       "8 days",
+    records:        "digital",
+    rejected:       0,
+    missedDeadline: true,
+    summary:        "Salem School District/SAU57 shows mixed compliance with the state's right-to-know law.",
+    agencyResponse: null,
+    requestList: [
+      { id: "207063", title: "Leadership and constituent emails", agency: "Salem School District/SAU57", status: "Awaiting Response", code: "processed", score: -3, url: "https://www.muckrock.com/foi/salem-3985/leadership-and-constituent-emails-salem-school-districtsau57-207063/", excluded: false, notes: "" },
+      { id: "204291", title: "Parental Bill of Rights", agency: "Salem School District/SAU57", status: "Completed", code: "done", score: 5, url: "https://www.muckrock.com/foi/salem-3985/parental-bill-of-rights-salem-school-districtsau57-204291/", excluded: false, notes: "" },
+      { id: "204165", title: "Parental Objections", agency: "Salem School District/SAU57", status: "Completed", code: "done", score: 4, url: "https://www.muckrock.com/foi/salem-3985/parental-objections-salem-school-districtsau57-204165/", excluded: false, notes: "" },
+      { id: "207108", title: "Performance Evaluation", agency: "Salem School District/SAU57", status: "Awaiting Acknowledgement", code: "ack", score: -5, url: "https://www.muckrock.com/foi/salem-3985/performance-evaluation-salem-school-districtsau57-207108/", excluded: false, notes: "" },
+    ],
+  },
+  "Shaker Regional School District/SAU80": {
+    counterpart:    "Belmont",
+    score:          5.0,
+    requests:       4,
+    responded:      4,
+    graded:         1,
+    avgReply:       "43 days",
+    records:        "digital",
+    rejected:       0,
+    missedDeadline: false,
+    summary:        "Shaker Regional School District/SAU80 responded to most requests quickly and in full.",
+    agencyResponse: null,
+    requestList: [
+      { id: "207065", title: "Leadership and constituent emails", agency: "Shaker Regional School District/SAU80", status: "Partially Completed", code: "partial", score: null, url: "https://www.muckrock.com/foi/belmont-3816/leadership-and-constituent-emails-shaker-regional-school-districtsau80-207065/", excluded: false, notes: "" },
+      { id: "204297", title: "Parental Bill of Rights", agency: "Shaker Regional School District/SAU80", status: "Completed", code: "done", score: 5, url: "https://www.muckrock.com/foi/belmont-3816/parental-bill-of-rights-shaker-regional-school-districtsau80-204297/", excluded: false, notes: "" },
+      { id: "204167", title: "Parental Objections", agency: "Shaker Regional School District/SAU80", status: "Partially Completed", code: "partial", score: null, url: "https://www.muckrock.com/foi/belmont-3816/parental-objections-shaker-regional-school-districtsau80-204167/", excluded: false, notes: "" },
+      { id: "207110", title: "Performance Evaluation", agency: "Shaker Regional School District/SAU80", status: "Partially Completed", code: "partial", score: null, url: "https://www.muckrock.com/foi/belmont-3816/performance-evaluation-shaker-regional-school-districtsau80-207110/", excluded: false, notes: "" },
+    ],
+  },
+  "Somersworth School District/SAU56": {
+    counterpart:    "Somersworth",
+    score:          1.0,
+    requests:       4,
+    responded:      2,
+    graded:         4,
+    avgReply:       "2 days",
+    records:        "digital",
+    rejected:       0,
+    missedDeadline: true,
+    summary:        "Somersworth School District/SAU56 shows mixed compliance with the state's right-to-know law.",
+    agencyResponse: null,
+    requestList: [
+      { id: "207066", title: "Leadership and constituent emails", agency: "Somersworth School District/SAU56", status: "Awaiting Response", code: "processed", score: -3, url: "https://www.muckrock.com/foi/somersworth-3993/leadership-and-constituent-emails-somersworth-school-districtsau56-207066/", excluded: false, notes: "" },
+      { id: "204299", title: "Parental Bill of Rights", agency: "Somersworth School District/SAU56", status: "Completed", code: "done", score: 5, url: "https://www.muckrock.com/foi/somersworth-3993/parental-bill-of-rights-somersworth-school-districtsau56-204299/", excluded: false, notes: "" },
+      { id: "204168", title: "Parental Objections", agency: "Somersworth School District/SAU56", status: "Completed", code: "done", score: 5, url: "https://www.muckrock.com/foi/somersworth-3993/parental-objections-somersworth-school-districtsau56-204168/", excluded: false, notes: "" },
+      { id: "207111", title: "Performance Evaluation", agency: "Somersworth School District/SAU56", status: "Awaiting Response", code: "processed", score: -3, url: "https://www.muckrock.com/foi/somersworth-3993/performance-evaluation-somersworth-school-districtsau56-207111/", excluded: false, notes: "" },
+    ],
   },
 };
 
 const TOWNS = Object.fromEntries(
   Object.entries(TOWN_OVERRIDES).map(([name, o]) => [name, { ...DEFAULTS, ...o }])
 );
+const DISTRICTS = Object.fromEntries(
+  Object.entries(DISTRICT_OVERRIDES).map(([name, o]) => [name, { ...DEFAULTS, ...o }])
+);
+const CATEGORIES = { town: TOWNS, district: DISTRICTS };
+let activeCat = "town";
 
 const RECORDS_DISPLAY = {
-  "digital":   { text: "Digital",       cls: "ok",  tip: "Lorem ipsum dolor sit amet, consectetur adipiscing elit." },
-  "in-person": { text: "In-person",     cls: "mid", tip: "Sed do eiusmod tempor incididunt ut labore et dolore." },
-  "none":      { text: "Not fulfilled", cls: "bad", tip: "Ut enim ad minim veniam, quis nostrud exercitation." }
+  "digital":   { text: "Digital",       cls: "ok",  tip: "This agency provided records digitally." },
+  "in-person": { text: "In-person",     cls: "mid", tip: "This agency provided some records only for in person review." },
+  "none":      { text: "Not fulfilled", cls: "bad", tip: "This agency did not provide any records." }
 };
 
 const $ = (id) => document.getElementById(id);
 const select = $("townSelect");
 
-Object.keys(TOWNS).forEach(name => {
-  const opt = document.createElement("option");
-  opt.value = name;
-  opt.textContent = name;
-  select.appendChild(opt);
-});
+function populateDropdown(cat) {
+  select.innerHTML = "";
+  Object.keys(CATEGORIES[cat]).forEach(name => {
+    const opt = document.createElement("option");
+    opt.value = name;
+    opt.textContent = name;
+    select.appendChild(opt);
+  });
+}
 
 function fmtScore(n) {
   const v = Math.abs(Number(n)).toFixed(1);
@@ -700,12 +1448,11 @@ function fmtScore(n) {
 }
 
 function render(name) {
-  const t = TOWNS[name];
+  const t = CATEGORIES[activeCat][name];
   if (!t) return;
 
   $("score").textContent = fmtScore(t.score);
 
-  // Meter: 0..5 scale, anything ≤ 0 clips to the left edge.
   const meterScore = Math.max(0, Math.min(5, t.score));
   $("meterDot").style.left = (meterScore / 5 * 100) + "%";
 
@@ -732,19 +1479,42 @@ function render(name) {
   $("statExempt").textContent = t.exemptions;
 
 
-  // Agency response
+  // Agency response ... need to adapt to new survey design 
   $("agencyTown").textContent = name;
   const line = $("agencyResponseLine");
   if (t.agencyResponse) {
     line.innerHTML = `Here is their statement: <span class="quote">"${t.agencyResponse}"</span>`;
   } else {
-    line.innerHTML = `They haven not yet responded.`;
+    line.innerHTML = `They have not yet responded.`;
   }
 }
 
+document.querySelectorAll(".seg-btn").forEach(btn => {
+  btn.addEventListener("click", () => {
+    const newCat = btn.dataset.cat;
+    if (newCat === activeCat) return;
+
+    const target = CATEGORIES[activeCat][select.value]?.counterpart;
+
+    activeCat = newCat;
+    document.querySelectorAll(".seg-btn").forEach(b => {
+      const isActive = b.dataset.cat === newCat;
+      b.classList.toggle("active", isActive);
+      b.setAttribute("aria-selected", isActive);
+    });
+
+    populateDropdown(newCat);
+
+    const fallback = Object.keys(CATEGORIES[newCat])[0];
+    select.value = (target && CATEGORIES[newCat][target]) ? target : fallback;
+    render(select.value);
+  });
+});
+
 select.addEventListener("change", e => render(e.target.value));
 
-const initial = Object.keys(TOWNS)[0];
+populateDropdown(activeCat);
+const initial = Object.keys(CATEGORIES[activeCat])[0];
 select.value = initial;
 render(initial);
 </script>
