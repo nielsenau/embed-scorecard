@@ -17,6 +17,7 @@
   }
 
   * { box-sizing: border-box; }
+  [hidden] { display: none !important; }
 
   html, body {
     margin: 0;
@@ -66,7 +67,6 @@
   }
   .seg-btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 
-  /* Headline */
   .headline {
     font-size: 22px;
     line-height: 1.45;
@@ -186,7 +186,6 @@
     color: var(--ink);
     margin-bottom: 3px;
   }
-  /* All stat values render in heading navy — no semantic coloring. */
   .stat-value.ok,
   .stat-value.mid,
   .stat-value.bad { color: var(--ink); }
@@ -266,6 +265,44 @@
     font-style: italic;
     color: var(--ink-body);
     margin: 6px 0;
+  }
+
+  .agency-intro { margin: 0; }
+  .response-stats {
+    display: flex;
+    gap: 28px;
+    justify-content: space-around;
+    padding: 12px 0;    
+    margin: 10px 0 4px;
+    border-top: 1px solid var(--rule);
+    border-bottom: 1px solid var(--rule);
+  }
+  .rstat-value {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--ink);
+    line-height: 1.2;
+    margin-bottom: 3px;
+  }
+  .rstat-label {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    line-height: 1.25;
+  }
+  .qa { margin: 14px 0 0; }
+  .qa h4 {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--ink);
+    margin: 0 0 4px;
+  }
+  .qa-quote {
+    font-style: italic;
+    color: var(--ink-body);
+    margin: 0;
   }
   .rubric {
     list-style: none;
@@ -375,8 +412,42 @@
   <details>
     <summary>Agency response</summary>
     <div class="body">
-      <p>We surveyed <span id="agencyTown">this town</span> about Right to Know access and this project and invited them to respond.</p>
-      <p id="agencyResponseLine"></p>
+      <p class="agency-intro">
+        We surveyed <span id="agencyTown">this town</span> about this project and invited them to respond.<span id="agencyResponseSuffix"></span>
+      </p>
+
+      <div class="response-stats" id="responseStats" hidden>
+        <div class="rstat" id="rstatStaffTime" hidden>
+          <div class="rstat-value"></div>
+          <div class="rstat-label">Staff time</div>
+        </div>
+        <div class="rstat" id="rstatCost" hidden>
+          <div class="rstat-value"></div>
+          <div class="rstat-label">Est. cost</div>
+        </div>
+        <div class="rstat" id="rstatSelfRating" hidden>
+          <div class="rstat-value"></div>
+          <div class="rstat-label">Self-rating</div>
+        </div>
+      </div>
+
+      <div class="qa" id="qaBalancing" hidden>
+        <h4>On applying the balancing test</h4>
+        <p class="qa-quote"></p>
+      </div>
+      <div class="qa" id="qaLegitimacy" hidden>
+        <h4>On whether these requests are legitimate</h4>
+        <p class="qa-quote"></p>
+      </div>
+      <div class="qa" id="qaOther" hidden>
+        <h4>What else they want the public to know</h4>
+        <p class="qa-quote"></p>
+      </div>
+
+      <!-- alt comment block if anyone skips the survey but sends a comment by email to Sruthi -->
+      <div class="qa" id="alternateComment" hidden>
+        <p class="qa-quote"></p>
+      </div>
     </div>
   </details>
 
@@ -413,11 +484,11 @@
      graded         : number of cells contributing to the score
      avgReply       : string shown in the Avg. Reply column
      records        : "digital" | "in-person" | "none"
-     pages          : number - total pages provided
+     pages          : number for the total pages provided
      rejected       : number or string
      exemptions     : number or string
      missedDeadline : true | false
-     agencyResponse : string (statement) | null (= "declined to comment")
+     agencyResponse : pulled from survey responses or direct comments (or if they declined to comment)
      summary        : editorial sentence under the meter (italic)
    ============================================================ */
 const DEFAULTS = {
@@ -1412,11 +1483,47 @@ const DISTRICT_OVERRIDES = {
   },
 };
 
+/* 
+   EXAMPLE entry while we wait for survey results 
+   */
+const EXAMPLE_TOWN = {
+  counterpart: "Example District",
+  score:          5,
+  requests:       8,
+  responded:      7,
+  graded:         8,
+  avgReply:       "12 days",
+  pages:          32,
+  exemptions:     0,
+  records:        "digital",
+  rejected:       1,
+  missedDeadline: false,
+  summary:        "This example town is the most compliant on the planet.",
+  agencyResponse: {
+    status:        "responded",
+    staffTime:     "10–49 hrs",
+    cost:          "$5–10k",
+    selfRating:    "Transparent",
+    balancingTest: "We weigh the public interest in disclosure against privacy and law-enforcement concerns, following NH Municipal Association and Attorney General guidance.",
+    legitimacy:    "Many were overly broad and we received too many at once, distracting from support for individual citizen requests.",
+    other:         "We are reviewing our records portal to make routine documents available online.",
+  },
+  requestList: [],
+};
+
+const EXAMPLE_DISTRICT = {
+  ...EXAMPLE_TOWN,
+  counterpart: "Example Town",
+  summary:     "Example values — replace with a real district once data is in.",
+};
+
 const TOWNS = Object.fromEntries(
-  Object.entries(TOWN_OVERRIDES).map(([name, o]) => [name, { ...DEFAULTS, ...o }])
+  Object.entries({ "Example Town": EXAMPLE_TOWN, ...TOWN_OVERRIDES })
+    .map(([name, o]) => [name, { ...DEFAULTS, ...o }])
 );
 const DISTRICTS = Object.fromEntries(
-  Object.entries(DISTRICT_OVERRIDES).map(([name, o]) => [name, { ...DEFAULTS, ...o }])
+  Object.entries({ "Example District": EXAMPLE_DISTRICT, ...DISTRICT_OVERRIDES })
+    .map(([name, o]) => [name, { ...DEFAULTS, ...o }])
 );
 const CATEGORIES = { town: TOWNS, district: DISTRICTS };
 let activeCat = "town";
@@ -1479,13 +1586,71 @@ function render(name) {
   $("statExempt").textContent = t.exemptions;
 
 
-  // Agency response ... need to adapt to new survey design 
+  renderAgencyResponse(name, t.agencyResponse);
+}
+
+function renderAgencyResponse(name, response) {
   $("agencyTown").textContent = name;
-  const line = $("agencyResponseLine");
-  if (t.agencyResponse) {
-    line.innerHTML = `Here is their statement: <span class="quote">"${t.agencyResponse}"</span>`;
-  } else {
-    line.innerHTML = `They have not yet responded.`;
+  const suffix = $("agencyResponseSuffix");
+
+  // Hide every conditional block; we'll re-show the relevant ones.
+  ["responseStats", "rstatStaffTime", "rstatCost", "rstatSelfRating",
+   "qaBalancing", "qaLegitimacy", "qaOther", "alternateComment"
+  ].forEach(id => $(id).hidden = true);
+
+  // null → haven't responded yet
+  if (!response) {
+    suffix.textContent = " They have not responded.";
+    return;
+  }
+
+  // Back-compat: a bare string is treated as an alternate comment.
+  if (typeof response === "string") {
+    response = { status: "alternate", comment: response };
+  }
+
+  if (response.status === "declined") {
+    suffix.textContent = " They declined to comment.";
+    return;
+  }
+
+  if (response.status === "alternate") {
+    suffix.textContent = " They provided the following comment.";
+    const alt = $("alternateComment");
+    alt.hidden = false;
+    alt.querySelector(".qa-quote").textContent = `"${response.comment || ""}"`;
+    return;
+  }
+
+  suffix.textContent = "";
+
+  const choiceStats = [
+    ["rstatStaffTime",  response.staffTime,  v => v],
+    ["rstatCost",       response.cost,       v => v],
+    ["rstatSelfRating", response.selfRating, v => `${v}`],
+  ];
+  let anyChoice = false;
+  for (const [id, value, fmt] of choiceStats) {
+    if (value) {
+      const el = $(id);
+      el.hidden = false;
+      el.querySelector(".rstat-value").textContent = fmt(value);
+      anyChoice = true;
+    }
+  }
+  $("responseStats").hidden = !anyChoice;
+
+  const openEnded = [
+    ["qaBalancing",  response.balancingTest],
+    ["qaLegitimacy", response.legitimacy],
+    ["qaOther",      response.other],
+  ];
+  for (const [id, text] of openEnded) {
+    if (text) {
+      const el = $(id);
+      el.hidden = false;
+      el.querySelector(".qa-quote").textContent = `"${text}"`;
+    }
   }
 }
 
