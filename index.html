@@ -2124,12 +2124,25 @@ function applyHashSelection() {
 }
 
 window.addEventListener('hashchange', applyHashSelection);
+window.addEventListener('popstate',    applyHashSelection);
+window.addEventListener('pageshow',    applyHashSelection);
 window.addEventListener('message', (e) => {
   const d = e && e.data;
   if (d && (d.type === 'selectEntity' || d.entity) && (d.name || d.entity)) {
     selectEntityByName(d.name || d.entity);
   }
 });
+
+// Backstop poll: when the iframe is navigated by a parent-page link with
+// target="iframe-name", browsers don't always fire `hashchange` even though
+// location.hash visibly updates. A cheap 250ms tick catches the miss.
+let _lastSeenHash = location.hash;
+setInterval(() => {
+  if (location.hash !== _lastSeenHash) {
+    _lastSeenHash = location.hash;
+    applyHashSelection();
+  }
+}, 250);
 
 // Apply any hash present at load (overrides the default first-entity render above)
 applyHashSelection();
