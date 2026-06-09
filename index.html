@@ -475,6 +475,17 @@
     color: var(--ink);
   }
 
+  .last-updated {
+    margin: 18px 0 0;
+    padding-top: 12px;
+    border-top: 1px solid var(--rule);
+    font-size: 11px;
+    font-style: italic;
+    color: var(--ink-soft);
+    text-align: right;
+  }
+  .last-updated #lastUpdated { font-style: normal; }
+
   /* Responsive */
   @media (max-width: 540px) {
     .scorecard { padding: 22px 18px; margin: 8px; }
@@ -630,6 +641,8 @@
       </ul>
     </div>
   </details>
+
+  <p class="last-updated">Last updated <span id="lastUpdated">June 9, 2026</span></p>
 </div>
 
 <script>
